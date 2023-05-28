@@ -1,0 +1,34 @@
+.navbar {
+    background-color: darkseagreen;
+    height: 80px;
+    
+}
+
+.navbar .leftside {
+    float: left;
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+.navbar .leftside img {
+    height: 65px;
+    width: 65px;
+}
+
+.navbar .rightside {
+    text-transform: uppercase;
+    font-family:'Courier New', Courier, monospace;
+    float: right;
+    position: relative;
+    top: 25px
+}
+
+#dashboard-link, #cheatsheets-link {
+    padding-right: 30px;
+    padding-left: 30px;
+    text-decoration: none;
+    font-size: 22px;
+    letter-spacing: 1px;
+    font-weight: 520;
+    
+}
