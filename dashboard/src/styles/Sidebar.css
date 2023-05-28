@@ -1,0 +1,17 @@
+.sidebar {
+    float: left;
+    text-align: left;
+    position: relative;
+    height: 100%;
+    background-color: beige;
+    padding-top: 20px;
+    height: 100%;
+}
+
+#profilesettings-link, #search-link, #files-heading {
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    padding: 20px;
+    
+}
