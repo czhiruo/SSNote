@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="notes" id="app">
+        <div class="notesSidebar">
+            <button class="addNote" type="button">Create Note</button>
+            <div class="createdNotes">
+                <div class="eachNote selectedNote">
+                    <div class="notesTitlePreview">Title</div>
+                    <div class="notesContentPreview">blah blah blah</div>
+                    <div class="notesUpdatedPreview">Tuesday 2pm</div>
+                </div>
+            </div>
+        </div>
+        <div class="newNote">
+            <div class="topbar"></div>
+                <div class="container">
+                    <div class="options">
+                    <!-- Text Format -->
+                    <button id="bold" class="option-button format">
+                        <i class="fa-solid fa-bold"></i>
+                    </button>
+                    <button id="italic" class="option-button format">
+                        <i class="fa-solid fa-italic"></i>
+                    </button>
+                    <button id="underline" class="option-button format">
+                        <i class="fa-solid fa-underline"></i>
+                    </button>
+                    <button id="strikethrough" class="option-button format">
+                        <i class="fa-solid fa-strikethrough"></i>
+                    </button>
+                    <button id="superscript" class="option-button script">
+                        <i class="fa-solid fa-superscript"></i>
+                    </button>
+                    <button id="subscript" class="option-button script">
+                        <i class="fa-solid fa-subscript"></i>
+                    </button>
+            <input class="noteTitle" type="text" placeholder="New Title">
+            <textarea class="noteContent">Write Something Here</textarea>
+        </div>
+    </div>
+    <script src="main.js" type="module"></script>
+</body>
+</html>

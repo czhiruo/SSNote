@@ -7,7 +7,7 @@
     gap: 20px;
     height: 100vh;
     font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-    background-color: linear-gradient(to bottom right, rgba(218, 220, 124, 0.43), rgba(218, 113, 204, 0.521));
+    background: linear-gradient(to bottom right, rgb(229, 173, 213), white, rgb(188, 228, 188));
   }
   
   input[type="text"],
@@ -20,7 +20,7 @@
     margin-top: 50px;
     cursor: pointer;
     font-size: 20px;
-    background: linear-gradient(to bottom right, rgb(214, 217, 130), rgb(187, 141, 183));
+    background: linear-gradient(to bottom right, rgb(226, 215, 131), rgb(234, 193, 230));
     border: 1px solid #c592ad;
     color: #fff;
     padding: 10px 20px;
@@ -53,6 +53,8 @@
   
   .title {
     font-family: monospace;
+    /* text-shadow: 0 0 3px greenyellow; */
+    color: black;
     font-size: 35px;
     margin-bottom: 20px;
     text-align: center;
