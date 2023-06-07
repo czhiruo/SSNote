@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./styles.css";
+import logo from './SSNotelogo.jpeg'
 
-function App() {
+function Login() {
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // User Login info
+  //store information for users to login
   const database = [
     {
       username: "zhiruo",
@@ -18,30 +19,30 @@ function App() {
   ];
 
   const errors = {
-    uname: "username not found",
-    pass: "wrong password"
+    username: "username not found",
+    password: "wrong password"
   };
 
   const handleSubmit = (event) => {
     //Prevent page reload
     event.preventDefault();
 
-    var { uname, pass } = document.forms[0];
+    var { username, password } = document.forms[0];
 
     // Find user login info
-    const userData = database.find((user) => user.username === uname.value);
+    const userData = database.find((user) => user.username === username.value);
 
     // Compare user info
     if (userData) {
-      if (userData.password !== pass.value) {
+      if (userData.password !== password.value) {
         // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
+        setErrorMessages({ name: "password", message: errors.password });
       } else {
         setIsSubmitted(true);
       }
     } else {
       // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
+      setErrorMessages({ name: "username", message: errors.username });
     }
   };
 
@@ -50,6 +51,13 @@ function App() {
     name === errorMessages.name && (
       <div className="error">{errorMessages.message}</div>
     );
+
+  function handlePasswordChange() {
+    alert("Change Password!")
+  }
+
+  function handleNewAccount() {
+  }
 
   // JSX code for login form
   const renderForm = (
@@ -65,6 +73,12 @@ function App() {
           <input type="password" name="pass" required />
           {renderErrorMessage("pass")}
         </div>
+          <div className="changePassword" onClick = {handlePasswordChange}>
+          <u>Forgot Password?</u>
+          </div>
+          <div className="signUp" onClick = {handleNewAccount}>
+            <u>Sign Up Here!</u>
+          </div>
         <div className="button-container">
           <input type="submit" />
         </div>
@@ -75,6 +89,7 @@ function App() {
   return (
     <div className="app">
       <div className="login-form">
+        <img className="logo" src={logo} alt = "logo"/>
         <div className="title">Login</div>
         {isSubmitted ? <div>User is successfully logged in</div> : renderForm}
       </div>
@@ -82,4 +97,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

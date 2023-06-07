@@ -9,6 +9,13 @@
     font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
     background: linear-gradient(to bottom right, rgb(229, 173, 213), white, rgb(188, 228, 188));
   }
+
+  .logo{
+    width: 150px;
+    height: fit-content;
+    position: relative;
+    left: 25px;
+  }
   
   input[type="text"],
   input[type="password"] {
@@ -34,6 +41,25 @@
   .button-container {
     display: flex;
     justify-content: center;
+  }
+
+  .changePassword{
+    position: relative;
+    left: 23%;
+    color: rgb(214, 80, 201);
+    font-size: 14px;
+    cursor: pointer
+  }
+
+  .signUp{
+    position: relative;
+    top: 40px;
+    left: 60px;
+    color: black;
+    font-size: 14px;
+    cursor: pointer;
+
+
   }
   
   .login-form {
