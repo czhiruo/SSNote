@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <EditorComponent />
-      <button type="button" class="btn btn-success">Convert to Cheatsheet</button>
+      <button type="button" className="btn btn-success">Convert to Cheatsheet</button>
     </div>
   );
 }
