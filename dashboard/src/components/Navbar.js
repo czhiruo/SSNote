@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../assets/SSNote-Logo-gray copy.png';
+import Logo from '../assets/SSNote-Logo-gray.png';
 import Menu from '../assets/menu-bar copy.png';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
@@ -13,10 +13,10 @@ function Navbar() {
       <div className='leftSide'>
         {/* sidebar button and logo */}
         <button>
-            <img id='menu-logo' src={Menu} />
+            <img id='menu-logo' src={Menu} alt="menu-logo"/>
         </button>
         
-        <img id='ssnote-logo' src={Logo} />
+        <img id='ssnote-logo' src={Logo} alt="ssnote-logo" />
       </div>
 
       <div className='rightSide'>
