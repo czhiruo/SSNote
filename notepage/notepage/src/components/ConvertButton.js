@@ -4,7 +4,7 @@ import { Button, Modal, Form } from 'react-bootstrap';
 const ConvertButton = () => {
   const [showModal, setShowModal] = useState(false);
   const [orientation, setOrientation] = useState('landscape');
-  const [numPages, setNumPages] = useState(1);
+  const [fontSize, setFontSize] = useState(1);
   const [selectedTags, setSelectedTags] = useState([]);
 
   const handleCloseModal = () => {
@@ -13,7 +13,7 @@ const ConvertButton = () => {
 
   const handleConvert = () => {
     // Perform conversion with selected orientation, number of pages, and tags
-    console.log('Conversion:', orientation, numPages, selectedTags);
+    console.log('Conversion:', orientation, fontSize, selectedTags);
     setShowModal(false);
   };
 
@@ -53,23 +53,31 @@ const ConvertButton = () => {
                 <option value="portrait">Portrait</option>
               </Form.Control>
             </Form.Group>
-            <Form.Group controlId="formNumPages">
+            <Form.Group controlId="formFontSize">
               <Form.Label>Number of Pages:</Form.Label>
               <Form.Control
                 type="number"
                 min={1}
-                value={numPages}
-                onChange={(e) => setNumPages(Number(e.target.value))}
+                value={fontSize}
+                onChange={(e) => setFontSize(Number(e.target.value))}
               />
             </Form.Group>
             <Form.Group controlId="formTags">
               <Form.Label>Tags:</Form.Label>
               <Form.Check
                 type="checkbox"
-                id="definitionTag"
-                label="Definition"
-                value="definition"
-                checked={selectedTags.includes('definition')}
+                id="boldTag"
+                label="Bold"
+                value="Bold"
+                checked={selectedTags.includes('bold')}
+                onChange={handleTagChange}
+              />
+              <Form.Check
+                type="checkbox"
+                id="underlineTag"
+                label="Underline"
+                value="Underline"
+                checked={selectedTags.includes('underline')}
                 onChange={handleTagChange}
               />
               <Form.Check
@@ -77,14 +85,6 @@ const ConvertButton = () => {
                 id="formulaTag"
                 label="Formula"
                 value="formula"
-                checked={selectedTags.includes('formula')}
-                onChange={handleTagChange}
-              />
-              <Form.Check
-                type="checkbox"
-                id="theoremTag"
-                label="Theorem"
-                value="theorem"
                 checked={selectedTags.includes('theorem')}
                 onChange={handleTagChange}
               />
