@@ -1,17 +1,59 @@
-.sidebar {
-    float: left;
-    text-align: left;
-    position: relative;
-    height: 100%;
-    background-color: beige;
-    padding-top: 20px;
-    height: 100%;
+
+* {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-#profilesettings-link, #search-link, #files-heading {
-    text-decoration: none;
-    font-family: 'Courier New', Courier, monospace;
-    color: black;
-    padding: 20px;
+.sidebar {
+    padding-top: 90px;
+    float: left;
+    height: 100vh;
+    width: 180px;
+    background-color: rgb(241, 241, 241);
+    border-right: 1px black solid;
+    line-height: 30px;
+    text-align: left;
+    position: fixed;
+    z-index: 2;
+}
+
+.icons {
+    padding-right: 15px;
+    padding-left: 20px;
+    /* padding-top: 15px; */
+    font-size: large;
     
+}
+
+#profile-link, #settings-link, #search-link {
+    text-decoration: none;
+    color: black;
+    font-size: smaller;
+    letter-spacing: 1px;
+    /* padding-top: 15px; */
+
+    /* background-color: white;
+    border-radius: 4px; */
+
+}
+
+
+#profile, #settings, #search {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-decoration: none;
+    color: black;
+    font-size: smaller;
+    letter-spacing: 1px;
+}
+
+#profile:hover, #settings:hover, #search:hover {
+    background-color: white;
+}
+
+#divider {
+    padding-left: 14px;
 }
