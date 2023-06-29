@@ -22,7 +22,7 @@ const Login = () => {
   ];
 
   const errors = {
-    username: "username not found",
+    email: "email not found",
     password: "wrong password"
   };
 
@@ -32,10 +32,10 @@ const Login = () => {
 
     console.log(document.forms[0]);
 
-    var { username, password } = document.forms[0];
+    var { email, password } = document.forms[0];
 
     // Find user login info
-    const userData = database.find((user) => user.username === username.value);
+    const userData = database.find((user) => user.email === email.value);
 
     // Compare user info
     if (userData) {
@@ -48,7 +48,7 @@ const Login = () => {
       }
     } else {
       // Username not found
-      setErrorMessages({ name: "username", message: errors.username });
+      setErrorMessages({ name: "email", message: errors.email });
     }
   };
 
@@ -63,7 +63,7 @@ const Login = () => {
   }
 
   function handleNewAccount() {
-    
+
   }
 
   // JSX code for login form
@@ -71,9 +71,9 @@ const Login = () => {
     <div className="form">
       <form onSubmit={handleSubmit}>
         <div className="input-container">
-          <label>Username </label>
-          <input type="text" name="uname" required />
-          {renderErrorMessage("uname")}
+          <label>Email </label>
+          <input type="text" name="email" required />
+          {renderErrorMessage("email")}
         </div>
         <div className="input-container">
           <label>Password </label>

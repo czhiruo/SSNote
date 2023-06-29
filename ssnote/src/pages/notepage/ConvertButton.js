@@ -11,6 +11,7 @@ const ConvertButton = () => {
     setShowModal(false);
   };
 
+  //convert to cheatsheet
   const handleConvert = () => {
     // Perform conversion with selected orientation, number of pages, and tags
     console.log('Conversion:', orientation, fontSize, selectedTags);
@@ -54,7 +55,7 @@ const ConvertButton = () => {
               </Form.Control>
             </Form.Group>
             <Form.Group controlId="formFontSize">
-              <Form.Label>Number of Pages:</Form.Label>
+              <Form.Label>Font Size:</Form.Label>
               <Form.Control
                 type="number"
                 min={1}
