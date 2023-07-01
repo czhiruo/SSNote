@@ -27,6 +27,8 @@ const DEFAULT_INITIAL_DATA = {
 const AlignmentTuneTool = require("editorjs-text-alignment-blocktune");
 const ColorPlugin = require("editorjs-text-color-plugin");
 
+let cheatsheetData = "no data";
+
 const EditorComponent = () => {
   const ejInstance = useRef();
 
@@ -125,18 +127,6 @@ const EditorComponent = () => {
     };
   }, []);
 
-  // const saveData = async () => {
-  //         try {
-  //           const savedData = await ejInstance.current.save();
-  //           console.log(savedData);
-  //           // Do something with the saved data
-  //         } catch (error) {
-  //           console.error('Error saving data:', error);
-  //         }
-  //       };
-
-  //save note data
-
   const handleSaveData = async () => {
     try {
       // Add a new document to the 'notes' collection in Firestore
@@ -145,6 +135,7 @@ const EditorComponent = () => {
 
       console.log("Note saved to Firebase:");
       addDoc(ref, savedData);
+      cheatsheetData = savedData;
     } catch (error) {
       console.error("Error saving note to Firebase:", error);
     }
@@ -164,4 +155,5 @@ const EditorComponent = () => {
   );
 };
 
+export { cheatsheetData };
 export default EditorComponent;

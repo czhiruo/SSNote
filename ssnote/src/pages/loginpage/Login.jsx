@@ -4,19 +4,21 @@ import logo from './SSNotelogo.jpeg'
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
 
-  //store information for users to login
+  // Store information for users to login
   const database = [
     {
-      username: "zhiruo",
+      email: "e0967827@u.nus.edu",
       password: "1234"
     },
     {
-      username: "krista",
+      email: "e2746237@u.nus.edu",
       password: "pass2"
     }
   ];
@@ -27,30 +29,23 @@ const Login = () => {
   };
 
   const handleSubmit = (event) => {
-    //Prevent page reload
-    event.preventDefault();
+  event.preventDefault();
+  const userData = database.find((user) => user.email === email);
 
-    console.log(document.forms[0]);
-
-    var { email, password } = document.forms[0];
-
-    // Find user login info
-    const userData = database.find((user) => user.email === email.value);
-
-    // Compare user info
-    if (userData) {
-      if (userData.password !== password.value) {
-        // Invalid password
-        setErrorMessages({ name: "password", message: errors.password });
-      } else {
-        setIsSubmitted(true);
-        navigate.push('/dashboard');
-      }
+  if (userData) {
+    if (userData.password !== password) {
+      setErrorMessages({ name: "password", message: errors.password });
     } else {
-      // Username not found
-      setErrorMessages({ name: "email", message: errors.email });
+      setTimeout(() => {
+        setIsSubmitted(true);
+        navigate('/dashboard');
+      }, 0);
     }
-  };
+  } else {
+    setErrorMessages({ email: "email", message: errors.email });
+  }
+};
+
 
   // Generate JSX code for error message
   const renderErrorMessage = (name) =>
@@ -72,20 +67,20 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <div className="input-container">
           <label>Email </label>
-          <input type="text" name="email" required />
+          <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           {renderErrorMessage("email")}
         </div>
         <div className="input-container">
           <label>Password </label>
-          <input type="password" name="pass" required />
+          <input type="password" name="pass" value={password} onChange={(e) => setPassword(e.target.value)} required />
           {renderErrorMessage("pass")}
         </div>
-          <div className="changePassword" onClick = {handlePasswordChange}>
+        <div className="changePassword" onClick={handlePasswordChange}>
           <u>Forgot Password?</u>
-          </div>
-          <div className="signUp" onClick = {handleNewAccount}>
-            <u>Sign Up Here!</u>
-          </div>
+        </div>
+        <div className="signUp" onClick={handleNewAccount}>
+          <u>Sign Up Here!</u>
+        </div>
         <div className="button-container">
           <input type="submit" />
         </div>
@@ -96,9 +91,9 @@ const Login = () => {
   return (
     <div className="app">
       <div className="login-form">
-        <img className="logo" src={logo} alt = "logo"/>
+        <img className="logo" src={logo} alt="logo" />
         <div className="title">Login</div>
-        {isSubmitted ? (<div>User is successfully logged in</div>) : renderForm}
+        {isSubmitted ? navigate('/dashboard') : renderForm}
       </div>
     </div>
   );
