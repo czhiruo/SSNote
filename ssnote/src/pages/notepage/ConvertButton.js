@@ -3,6 +3,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { cheatsheetData } from "./EditorComponent";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
+import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import { db } from "../../firebase";
 import { addDoc, collection } from "@firebase/firestore";
@@ -16,6 +17,35 @@ const ConvertButton = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  function loadFile(url, callback) {
+    PizZipUtils.getBinaryContent(url, callback);
+  }
+  
+  function checkFileType(url) {
+  return fetch(url)
+    .then((response) => {
+      if (response.ok && response.headers.get('content-type') === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        return true; // Valid DOCX file
+      } else {
+        return false; // Not a valid DOCX file
+      }
+    })
+    .catch((error) => {
+      console.error('Error checking file type:', error);
+      return false; // Error occurred
+    });
+  }
+  
+checkFileType('/public/tag-example.docx')
+  .then((isValid) => {
+    if (isValid) {
+      console.log('Valid DOCX file');
+    } else {
+      console.log('Not a valid DOCX file');
+    }
+  });
+
 
   //convert to cheatsheet
   const handleConvert = () => {
@@ -37,25 +67,57 @@ const ConvertButton = () => {
     console.log(filteredData);
     const ref = collection(db, "filteredStrings");
     addDoc(ref, filteredData);
+    
+    //generating cheatsheet
+    loadFile(
+        '/public/tag-example.docx',
+        function (error, content) {
+          
+          if (error) {
+            throw error;
+          }
+          var zip = new PizZip(content);
+          var doc = new Docxtemplater(zip, {
+            paragraphLoop: true,
+            linebreaks: true,
+          });
+          doc.setData(filteredData);
+          try {
+            doc.render();
+          } catch (error) {
+            function replaceErrors(key, value) {
+              if (value instanceof Error) {
+                return Object.getOwnPropertyNames(value).reduce(function (
+                  error,
+                  key
+                ) {
+                  error[key] = value[key];
+                  return error;
+                },
+                {});
+              }
+              return value;
+            }
+            console.log(JSON.stringify({ error: error }, replaceErrors));
 
-    const templatePath = "./template.docx";
-    const newWindow = window.open("", "_blank");
-
-    fetch(templatePath)
-      .then((response) => response.arrayBuffer())
-      .then((data) => {
-        const zip = new PizZip(data);
-        const doc = new Docxtemplater().loadZip(zip);
-        doc.setData({ strings: filteredData });
-        doc.render();
-        const generatedDoc = doc.getZip().generate({ type: "blob" });
-        saveAs(generatedDoc, "cheatsheet.docx");
-        newWindow.location.href = URL.createObjectURL(generatedDoc);
-      })
-      .catch((error) => {
-        console.log("Error:", error);
-      });
-
+            if (error.properties && error.properties.errors instanceof Array) {
+              const errorMessages = error.properties.errors
+                .map(function (error) {
+                  return error.properties.explanation;
+                })
+                .join('\n');
+              console.log('errorMessages', errorMessages);
+            }
+            throw error;
+          }
+          var out = doc.getZip().generate({
+            type: 'blob',
+            mimeType:
+              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          });
+          saveAs(out, 'output.docx');
+        }
+      );
     //const finalDocument = processJsonToDocument(jsonData); // Replace with your code to process JSON data and generate the final document
   };
 
