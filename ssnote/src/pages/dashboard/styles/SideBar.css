@@ -3,7 +3,9 @@
 }
 
 .sidebar {
-    padding-top: 90px;
+    display: flex;
+    flex-direction: column;
+    /* padding-top: 90px; */
     float: left;
     height: 100vh;
     width: 180px;
@@ -19,14 +21,22 @@
     padding-right: 15px;
     padding-left: 20px;
     /* padding-top: 15px; */
-    font-size: large;
+    font-size: 50px;
 
 }
 
 #ssnote-logo {
-    height: 50px;
-    float: left;
+    height: 80px;
+    /* float: left; */
     padding: 15px;
+    padding-left: 25px;
+    /* padding-left: 50px; */
+}
+
+.leftSide {
+    display: flex;
+    align-items: center;
+
 }
 
 #menu-logo {
@@ -35,6 +45,7 @@
     padding-left: 20px;
     padding-top: 25px;
     padding-right: 20px;
+    border: 0;
 }
 
 #dashboard-link,
@@ -61,7 +72,7 @@
 #search {
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    /* margin-top: 5px; */
     border-radius: 5px;
     margin-left: 5px;
     margin-right: 5px;

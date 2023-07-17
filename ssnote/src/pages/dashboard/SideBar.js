@@ -10,15 +10,16 @@ import Menu from './assets/menu-bar copy.png';
 function Sidebar() {
   return (
     <div>
+      
+    <div className='sidebar'>
       <div className='leftSide'>
         {/* sidebar button and logo */}
-        <button>
+        {/* <button>
             <img id='menu-logo' src={Menu} alt="menu-logo"/>
-        </button>
+        </button> */}
         
         <img id='ssnote-logo' src={Logo} alt="ssnote-logo" />
       </div>
-    <div className='sidebar'>
       
         <Link to='/profile' id='profile'>
             <RxIcons.RxPerson className='icons' />
@@ -26,12 +27,12 @@ function Sidebar() {
         </Link>
 
         <Link to='/dashboard' id='dashboard'>
-            <RxIcons.RxPerson className='icons' />
+            <RxIcons.RxDashboard className='icons' />
             Dashboard
         </Link>
 
         <Link to='/cheatsheets' id='cheatsheets'>
-            <RxIcons.RxPerson className='icons' />
+            <RxIcons.RxFileText className='icons' />
             Cheatsheets
         </Link>
         

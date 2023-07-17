@@ -1,0 +1,20 @@
+.profile {
+    position: relative;
+    padding-top: 35px;
+    padding-left: 200px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#profile-title {
+    float: left;
+    font-size: 20px;
+    padding-left: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.profile hr {
+    width: 96%;
+}

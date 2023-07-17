@@ -1,6 +1,6 @@
 .home {
     position: relative;
-    padding-top: 85px;
+    padding-top: 35px;
     padding-left: 200px;
     display: flex;
     flex-direction: row;
@@ -58,6 +58,7 @@
     float: right;
     margin: 5px;
     margin-top: 9px;
+    z-index: 10;
 }
 
 .home button:hover {
