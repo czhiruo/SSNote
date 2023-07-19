@@ -4,11 +4,11 @@ import logo from "./SSNotelogo.jpeg";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,15 +26,6 @@ const Login = () => {
         alert("Invalid user");
       });
   };
-
-  function handlePasswordChange() {
-    alert("Change Password!");
-  }
-
-  //link to sign up
-  function handleNewAccount() {
-    navigate("/signup")
-  }
 
   //login form display
   const renderForm = (
@@ -60,12 +51,12 @@ const Login = () => {
             required
           />
         </div>
-        <div className="changePassword" onClick={handlePasswordChange}>
+        <Link to={'/forgotpassword'} className="changePassword" >
           <u>Forgot Password?</u>
-        </div>
-        <div className="signUp" onClick={handleNewAccount}>
+        </Link>
+        <Link to={'/signup'} className="signUp" >
           <u>Sign Up Here!</u>
-        </div>
+        </Link>
         <div className="button-container">
           <input type="submit" />
         </div>
