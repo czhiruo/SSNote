@@ -7,6 +7,11 @@
     flex-wrap: wrap;
 }
 
+.settings a {
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
 #settings-title {
     float: left;
     font-size: 20px;
@@ -26,6 +31,22 @@
 .settings button {
     border-radius: 5px;
     margin: 5px 10px;
+    letter-spacing: 1px;
+    font-size: small;
+}
+
+#email-button, #password-button {
+    /* float: right; */
+}
+
+#delete-account, #confirm-delete {
+    color: rgb(212, 5, 5);
+}
+
+#curr-email {
+    margin-left: 10px;
+    font-size: 12px;
+    color:rgb(152, 152, 152)
 }
 
 
