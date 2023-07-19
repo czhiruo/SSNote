@@ -48,22 +48,6 @@
     border: 0;
 }
 
-#dashboard-link,
-#cheatsheets-link,
-#profile-link,
-#settings-link,
-#search-link {
-    text-decoration: none;
-    color: black;
-    font-size: smaller;
-    letter-spacing: 1px;
-    /* padding-top: 15px; */
-
-    /* background-color: white;
-    border-radius: 4px; */
-
-}
-
 
 #dashboard,
 #cheatsheets,
@@ -93,3 +77,39 @@
 #divider {
     padding-left: 14px;
 }
+
+#search {
+    padding: 0px;
+}
+
+/* Add the styles for the search bar */
+#search-bar {
+    padding: 25px 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: smaller;
+    letter-spacing: 1px;
+  }
+  
+  /* Style the search button */
+  #search {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-decoration: none;
+    color: black;
+    font-size: smaller;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  
+  /* Add hover effect for the search button */
+  #search:hover {
+    background-color: white;
+  }
+  

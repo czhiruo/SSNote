@@ -18,3 +18,14 @@
 .settings hr {
     width: 96%;
 }
+
+.sub-hr {
+    color: rgb(175, 175, 175);
+}
+
+.settings button {
+    border-radius: 5px;
+    margin: 5px 10px;
+}
+
+

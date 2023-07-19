@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as RxIcons from 'react-icons/rx';
 import * as IoIcons from 'react-icons/io5';
 import { Link } from 'react-router-dom';
@@ -8,6 +8,17 @@ import Menu from './assets/menu-bar copy.png';
 // import { SidebarData } from './SidebarData';
 
 function Sidebar() {
+
+  const [showSearchBar, setShowSearchBar] = useState(false);
+
+  const handleSearchButtonClick = () => {
+    setShowSearchBar(true);
+  };
+
+  const handleSearchBarBlur = () => {
+    setShowSearchBar(false);
+  };
+
   return (
     <div>
       
@@ -21,34 +32,49 @@ function Sidebar() {
         <img id='ssnote-logo' src={Logo} alt="ssnote-logo" />
       </div>
       
-        <Link to='/profile' id='profile'>
+        {/* <Link to='/profile' id='profile'>
             <RxIcons.RxPerson className='icons' />
             Profile
-        </Link>
+        </Link> */}
 
         <Link to='/dashboard' id='dashboard'>
             <RxIcons.RxDashboard className='icons' />
             Dashboard
         </Link>
 
-        <Link to='/cheatsheets' id='cheatsheets'>
+        {/* <Link to='/cheatsheets' id='cheatsheets'>
             <RxIcons.RxFileText className='icons' />
             Cheatsheets
-        </Link>
+        </Link> */}
         
         <Link to='/settings' id='settings'>
             <IoIcons.IoSettingsOutline className='icons' />
             Settings
         </Link>
-        
-        <Link to='/search' id='search'>
+
+        {/* <button id='search'>
+          <IoIcons.IoSearchOutline className='icons' />
+          Search
+        </button> */}
+
+        {showSearchBar ? (
+          <input
+            type='text'
+            id='search-bar'
+            placeholder='Search...'
+            onBlur={handleSearchBarBlur}
+          />
+        ) : (
+          <button id='search' onClick={handleSearchButtonClick}>
             <IoIcons.IoSearchOutline className='icons' />
             Search
-        </Link>
+          </button>
+        )}
 
-      <div id='divider'>
-        ______________
-      </div>
+        
+        
+
+      <hr />
 
     </div>
     </div>
@@ -56,3 +82,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+

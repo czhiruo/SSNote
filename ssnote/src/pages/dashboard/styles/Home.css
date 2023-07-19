@@ -32,9 +32,13 @@
     border: 1px;
 }
 
+.files a {
+    text-decoration: none;
+  }
+
 .file {
     border: 1px solid black;
-    height: 150px;
+    height: 135px;
     border-radius: 5px;
     margin: 10px;
     text-align: left;
@@ -45,19 +49,25 @@
 
 .file-title {
     margin-left: 15px;
+    margin-top: 0px;
+    /* background-color: aqua; */
+    text-decoration: none;
+    color: black;
+    
 }
 
 .home button {
-    padding-top: 4px;
+    padding-top: 0px;
     padding-left: 3px;
     padding-right: 3px;
+    padding-bottom: 0;
     font-size: larger;
     background-color: white;
     border: none;
     border-radius: 4px;
     float: right;
     margin: 5px;
-    margin-top: 9px;
+    margin-top: 0px;
     z-index: 10;
 }
 
@@ -71,3 +81,32 @@
     object-fit: cover;
     border-bottom: 1px solid;
 }
+
+
+#plus-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #c1c1c1;
+    color: white;
+    font-size: 24px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /* Add any other styles you want for the plus button */
+  }
+
+
+.popup-container {
+    margin-top: 0px;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    /* Add any other styles you want for the popup container */
+  }
