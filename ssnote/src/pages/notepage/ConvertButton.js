@@ -21,31 +21,6 @@ const ConvertButton = () => {
   function loadFile(url, callback) {
     PizZipUtils.getBinaryContent(url, callback);
   }
-  
-  function checkFileType(url) {
-  return fetch(url)
-    .then((response) => {
-      if (response.ok && response.headers.get('content-type') === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-        return true; // Valid DOCX file
-      } else {
-        return false; // Not a valid DOCX file
-      }
-    })
-    .catch((error) => {
-      console.error('Error checking file type:', error);
-      return false; // Error occurred
-    });
-  }
-  
-checkFileType('/public/tag-example.docx')
-  .then((isValid) => {
-    if (isValid) {
-      console.log('Valid DOCX file');
-    } else {
-      console.log('Not a valid DOCX file');
-    }
-  });
-
 
   //convert to cheatsheet
   const handleConvert = () => {
@@ -57,7 +32,7 @@ checkFileType('/public/tag-example.docx')
       blocks: cheatsheetData.blocks.reduce((acc, block) => {
         if (block.data.text.includes('<b><u class="cdx-underline">')) {
           const text = block.data.text.match(
-            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/
+            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets both bolded and underlined
           )[1];
           acc.push({ text });
         }
@@ -68,9 +43,9 @@ checkFileType('/public/tag-example.docx')
     const ref = collection(db, "filteredStrings");
     addDoc(ref, filteredData);
     
-    //generating cheatsheet
+    // generating cheatsheet
     loadFile(
-        '/public/tag-example.docx',
+        'tag-example.docx',
         function (error, content) {
           
           if (error) {
