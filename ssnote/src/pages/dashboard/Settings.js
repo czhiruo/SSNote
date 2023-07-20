@@ -3,7 +3,13 @@ import Sidebar from "./SideBar";
 import "./styles/Settings.css";
 import LogoutPopup from "./LogoutPopup";
 import DeleteAccountPopup from "./DeleteAccountPopup";
-import { getAuth, updatePassword, updateEmail, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import {
+  getAuth,
+  updatePassword,
+  updateEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+} from "firebase/auth";
 
 // import LoginPage from './pages/loginpage/LoginPage';
 
@@ -24,6 +30,7 @@ const Settings = () => {
   const user = auth.currentUser;
 
   const handleChangeEmail = () => {
+    
     setEmailError(null);
     setEmailSuccess(false);
 
@@ -37,12 +44,13 @@ const Settings = () => {
     }
 
     const credentials = EmailAuthProvider.credential(user.email, password);
+    console.log(credentials);
 
     // Call Firebase updateEmail method to change the user's email
-    reauthenticateWithCredential(credentials)
+    reauthenticateWithCredential(user, credentials)
       .then(() => {
         // User successfully reauthenticated, now update their email
-        return updateEmail(user, newEmail);
+        updateEmail(user, newEmail);
       })
       .then(() => {
         setEmailSuccess(true);
