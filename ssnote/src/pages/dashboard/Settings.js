@@ -139,18 +139,20 @@ const Settings = () => {
           {/* Pop-up with the email input */}
           {showEmailInput && (
             <div>
-              <input
+              <input className='email-change'
                 type="password"
                 placeholder="Enter current password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <input
+                className='email-change'
                 type="text"
                 placeholder="Enter new email"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
               />
+              <br/>
               <button onClick={handleChangeEmail}>Update Email</button>
               <button onClick={() => setShowEmailInput(false)}>Cancel</button>
               <br />
