@@ -171,12 +171,29 @@ const Settings = () => {
           <br />
           {passwordSuccess && <p>Password updated successfully.</p>}
           {passwordError && <p>Error: {passwordError}</p>}
+
+          <input 
+            className='change-password'
+            type="password"
+            placeholder="Enter old password"
+          />
+
+          <br/>
+
           <input
+            className='change-password'
             type="password"
             placeholder="Enter new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
+
+          <input 
+            className='change-password'
+            type="password"
+            placeholder="Confirm New Password"
+          />
+
         </span>
         <hr className="sub-hr" />
 

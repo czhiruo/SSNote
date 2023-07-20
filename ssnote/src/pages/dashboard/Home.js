@@ -82,7 +82,7 @@ function Home() {
       {showPopup && (
         <div className='popup-container'>
           {/* Add your content/form for creating a new file here */}
-          <button id='create-folder'><h3>Create New Folder</h3></button>
+          <button id='create-folder'><h3>Create New Note</h3></button>
           <br />
           {/* Add your form or content here */}
           <button onClick={togglePopup}>Close</button>
