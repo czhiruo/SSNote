@@ -5,9 +5,10 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Notepage from "./pages/notepage/NotePage";
 import Cheatsheets from "./pages/dashboard/Cheatsheets";
 // import Profile from './pages/dashboard/Profile';
-import Settings from "./pages/dashboard/Settings";
-import SignUp from "./pages/loginpage/SignUp";
-import ForgotPassword from "./pages/loginpage/ForgotPassword";
+import Settings from './pages/dashboard/Settings';
+import SignUp from './pages/loginpage/SignUp';
+import ForgotPassword from './pages/loginpage/ForgotPassword';
+import AccountDeleted from './pages/dashboard/AccountDeleted';
 
 const App = () => {
 
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/cheatsheets" element={<Cheatsheets />} />
         {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/settings" element={<Settings />} />
+        <Route path='/account-deleted' element={<AccountDeleted/>} />
       </Routes>
     </Router>
   );

@@ -139,18 +139,20 @@ const Settings = () => {
           {/* Pop-up with the email input */}
           {showEmailInput && (
             <div>
-              <input
+              <input className='email-change'
                 type="password"
                 placeholder="Enter current password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <input
+                className='email-change'
                 type="text"
                 placeholder="Enter new email"
                 value={newEmail}
                 onChange={(e) => setNewEmail(e.target.value)}
               />
+              <br/>
               <button onClick={handleChangeEmail}>Update Email</button>
               <button onClick={() => setShowEmailInput(false)}>Cancel</button>
               <br />
@@ -169,12 +171,29 @@ const Settings = () => {
           <br />
           {passwordSuccess && <p>Password updated successfully.</p>}
           {passwordError && <p>Error: {passwordError}</p>}
+
+          <input 
+            className='change-password'
+            type="password"
+            placeholder="Enter old password"
+          />
+
+          <br/>
+
           <input
+            className='change-password'
             type="password"
             placeholder="Enter new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
+
+          <input 
+            className='change-password'
+            type="password"
+            placeholder="Confirm New Password"
+          />
+
         </span>
         <hr className="sub-hr" />
 
@@ -204,3 +223,4 @@ const Settings = () => {
 };
 
 export default Settings;
+
