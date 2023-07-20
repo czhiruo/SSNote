@@ -30,9 +30,9 @@ const ConvertButton = () => {
     //getting the data needed only for the cheatsheet
     const filteredData = {
       blocks: cheatsheetData.blocks.reduce((acc, block) => {
-        if (block.data.text.includes('<b><u class="cdx-underline">')) {
+        if (block.data.text.includes('<b><u class="cdx-underline">')) { //filters both underline and bold
           const text = block.data.text.match(
-            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets both bolded and underlined
+            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets string inside 
           )[1];
           acc.push({ text });
         }
@@ -43,7 +43,7 @@ const ConvertButton = () => {
     const ref = collection(db, "filteredStrings");
     addDoc(ref, filteredData);
     
-    // generating cheatsheet
+    // generating cheatsheet and returning as an output file
     loadFile(
         'tag-example.docx',
         function (error, content) {
@@ -93,7 +93,6 @@ const ConvertButton = () => {
           saveAs(out, 'output.docx');
         }
       );
-    //const finalDocument = processJsonToDocument(jsonData); // Replace with your code to process JSON data and generate the final document
   };
 
   //choose tags
@@ -160,14 +159,14 @@ const ConvertButton = () => {
                 checked={selectedTags.includes("Underline")}
                 onChange={handleTagChange}
               />
-              {/* <Form.Check
+              <Form.Check
                 type="checkbox"
                 id="formulaTag"
-                label="Formula"
-                value="formula"
-                checked={selectedTags.includes('formula')}
+                label="Highligh"
+                value="highlight"
+                checked={selectedTags.includes('highlight')}
                 onChange={handleTagChange}
-              /> */}
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
