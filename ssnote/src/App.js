@@ -8,6 +8,7 @@ import Cheatsheets from './pages/dashboard/Cheatsheets';
 import Settings from './pages/dashboard/Settings';
 import SignUp from './pages/loginpage/SignUp';
 import ForgotPassword from './pages/loginpage/ForgotPassword';
+import AccountDeleted from './pages/dashboard/AccountDeleted';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/cheatsheets" element={<Cheatsheets />} />
         {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/settings" element={<Settings />} />
+        <Route path='/account-deleted' element={<AccountDeleted/>} />
       </Routes>
     </Router>
   );

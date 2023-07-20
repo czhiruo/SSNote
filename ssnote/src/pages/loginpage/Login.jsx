@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./styles.css";
-import logo from "./SSNotelogo.jpeg";
+import logo from "../dashboard/assets/SSNote-Logo-gray.png";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -54,12 +54,22 @@ const Login = () => {
         <Link to={'/forgotpassword'} className="changePassword" >
           <u>Forgot Password?</u>
         </Link>
-        <Link to={'/signup'} className="signUp" >
-          <u>Sign Up Here!</u>
-        </Link>
+
+        <br />
+        
         <div className="button-container">
           <input type="submit" />
         </div>
+
+        <br />
+
+        <span id='no-account'>Don't have an account?</span>
+        
+        <Link to={'/signup'} className="signUp" >
+          <u>Sign Up Here!</u>
+        </Link>
+
+
       </form>
     </div>
   );
