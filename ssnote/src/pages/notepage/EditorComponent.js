@@ -7,6 +7,8 @@ import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import { db } from "../../firebase";
 import { addDoc, collection } from '@firebase/firestore'
+import { AiOutlineDoubleLeft } from "react-icons/ai";
+import { Link } from 'react-router-dom';
 
 //default note
 const DEFAULT_INITIAL_DATA = {
@@ -142,7 +144,21 @@ const EditorComponent = () => {
   };
 
   return (
+    
     <>
+      <div>
+
+        <Link to='/dashboard'>
+          <AiOutlineDoubleLeft />
+          Return to Dashboard
+        </Link>
+
+      
+
+
+
+      </div>
+    
       <div id="editorjs"></div>
       <button
         onClick={handleSaveData}

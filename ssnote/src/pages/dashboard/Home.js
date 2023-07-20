@@ -18,22 +18,6 @@ function Home() {
   const [showMenu2, setShowMenu2] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // State to manage the visibility of the popup
 
-  // const toggleMenu1 = (event) => {
-  //   event.preventDefault(); // Prevent default link behavior
-  //   event.stopPropagation(); // Prevent link click when clicking the button
-  //   setShowMenu1(!showMenu1);
-  // };
-
-  // const toggleMenu2 = (event) => {
-  //   event.preventDefault(); // Prevent default link behavior
-  //   event.stopPropagation(); // Prevent link click when clicking the button
-  //   setShowMenu2(!showMenu2);
-  // };
-
-  // const togglePopup = () => {
-  //   setShowPopup(!showPopup); // Toggle the visibility of the popup
-  // };
-
   return (
     <div className='home'>
       <p id='dashboard-title'>Dashboard</p>
