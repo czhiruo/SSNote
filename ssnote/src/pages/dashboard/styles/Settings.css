@@ -37,6 +37,7 @@
 
 #email-button, #password-button {
     /* float: right; */
+    /* margin-right: auto; */
 }
 
 #delete-account, #confirm-delete {

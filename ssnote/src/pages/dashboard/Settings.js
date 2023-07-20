@@ -16,6 +16,10 @@ import {
 const Settings = () => {
   const [isLogoutPopupOpen, setLogoutPopupOpen] = useState(false);
 
+
+const [confirmNewPassword, setConfirmNewPassword] = useState("");
+const [isPasswordFormVisible, setPasswordFormVisible] = useState(false);
+
   const [newEmail, setNewEmail] = useState("");
   const [emailError, setEmailError] = useState(null);
   const [emailSuccess, setEmailSuccess] = useState(false);
@@ -64,23 +68,50 @@ const Settings = () => {
   };
 
   const handleChangePassword = () => {
-    setPasswordError(null);
-    setPasswordSuccess(false);
+        setPasswordError(null);
+        setPasswordSuccess(false);
+      
+        if (!newPassword) {
+          setPasswordError("Please enter a new password.");
+          return;
+        }
+      
+        if (newPassword !== confirmNewPassword) {
+          setPasswordError("Passwords do not match. Please re-enter and confirm your new password.");
+          return;
+        }
+      
+        // Call Firebase updatePassword method to change the user's password
+        updatePassword(user, newPassword)
+          .then(() => {
+            setPasswordSuccess(true);
+            setNewPassword("");
+            setConfirmNewPassword("");
+            setPasswordFormVisible(false); // Hide the form after successful password update
+          })
+          .catch((error) => {
+            setPasswordError(error.message);
+          });
+      
 
-    if (!newPassword) {
-      setPasswordError("Please enter a new password.");
-      return;
-    }
 
-    // Call Firebase updatePassword method to change the user's password
-    updatePassword(user, newPassword)
-      .then(() => {
-        setPasswordSuccess(true);
-        setNewPassword("");
-      })
-      .catch((error) => {
-        setPasswordError(error.message);
-      });
+    // setPasswordError(null);
+    // setPasswordSuccess(false);
+
+    // if (!newPassword) {
+    //   setPasswordError("Please enter a new password.");
+    //   return;
+    // }
+
+    // // Call Firebase updatePassword method to change the user's password
+    // updatePassword(user, newPassword)
+    //   .then(() => {
+    //     setPasswordSuccess(true);
+    //     setNewPassword("");
+    //   })
+    //   .catch((error) => {
+    //     setPasswordError(error.message);
+    //   });
   };
 
   const handleLogoutPopupToggle = () => {
@@ -164,6 +195,49 @@ const Settings = () => {
         <hr className="sub-hr" />
 
         <span id="password">
+  Password
+  <button id="password-button" onClick={() => setPasswordFormVisible(true)}>
+    Change Password
+  </button>
+  <br />
+  {passwordSuccess && <p>Password updated successfully.</p>}
+  {passwordError && <p>Error: {passwordError}</p>}
+
+  {isPasswordFormVisible && (
+    <div>
+      <input 
+        className='change-password'
+        type="password"
+        placeholder="Enter old password"
+      />
+
+      <br/>
+
+      <input
+        className='change-password'
+        type="password"
+        placeholder="Enter new password"
+        value={newPassword}
+        onChange={(e) => setNewPassword(e.target.value)}
+      />
+
+      <input 
+        className='change-password'
+        type="password"
+        placeholder="Confirm New Password"
+        value={confirmNewPassword}
+        onChange={(e) => setConfirmNewPassword(e.target.value)}
+      />
+
+      <br />
+
+      <button onClick={handleChangePassword}>Update Password</button>
+      <button onClick={() => setPasswordFormVisible(false)}>Cancel</button>
+    </div>
+  )}
+</span>
+
+        {/* <span id="password">
           Password
           <button id="password-button" onClick={handleChangePassword}>
             Change Password
@@ -194,7 +268,7 @@ const Settings = () => {
             placeholder="Confirm New Password"
           />
 
-        </span>
+        </span> */}
         <hr className="sub-hr" />
 
         <button id="logout" onClick={handleLogoutPopupToggle}>
