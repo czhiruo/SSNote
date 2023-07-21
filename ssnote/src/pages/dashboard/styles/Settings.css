@@ -33,6 +33,8 @@
     margin: 5px 10px;
     letter-spacing: 1px;
     font-size: small;
+    border: 0;
+    padding: 8px;
 }
 
 #email-button, #password-button {

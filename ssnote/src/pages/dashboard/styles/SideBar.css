@@ -64,6 +64,7 @@
     color: black;
     font-size: smaller;
     letter-spacing: 1px;
+    border: none;
 }
 
 #dashboard:hover,
