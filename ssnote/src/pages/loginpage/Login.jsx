@@ -58,7 +58,7 @@ const Login = () => {
         <br />
         
         <div className="button-container">
-          <input type="submit" />
+          <input type="submit" value='Log In'/>
         </div>
 
         <br />

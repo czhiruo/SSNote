@@ -7,7 +7,7 @@
     gap: 20px;
     height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(to bottom right, rgb(194, 194, 194), white, rgb(123, 123, 123));
+    background: linear-gradient(to bottom right, rgb(206, 247, 218), white, rgb(169, 200, 237));
   }
 
   .logo{
@@ -31,7 +31,7 @@
     /* margin-top: 50px; */
     cursor: pointer;
     font-size: 20px;
-    background-color:rgb(151, 151, 151);
+    background-color:rgb(141, 162, 197);
     /* background: linear-gradient(to bottom right, rgb(226, 215, 131), rgb(234, 193, 230)); */
     /* border: 1px solid #c592ad; */
     border: 0;
@@ -42,7 +42,7 @@
   }
   
   input[type="submit"]:hover {
-    background: #7a7a7a;
+    background: #606d80;
     border: 0px;
     border-radius: 5px;
     letter-spacing: 1px;
