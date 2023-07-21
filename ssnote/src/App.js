@@ -21,9 +21,9 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/notebook" element={<Notepage />} />
         <Route path="/cheatsheets" element={<Cheatsheets />} />
-        {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/settings" element={<Settings />} />
-        <Route path='/account-deleted' element={<AccountDeleted/>} />
+        <Route path='/account-deleted' element={<AccountDeleted />} />
+        <Route path="/notebook/:noteTitle" element={<Notepage />} />
       </Routes>
     </Router>
   );
