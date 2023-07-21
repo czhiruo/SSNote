@@ -1,22 +1,25 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../../firebase";
+import { db, auth } from "../../firebase";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const signUp = (e) => {
+  const signUp = async (e) => {
     e.preventDefault();
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential);
-        setShowModal(true);
+        console.log("Account successfully created with", userCredential)
+        const userRef = doc(db, 'users', userCredential.user.uid);
+        setDoc(userRef, { email: email });
       })
       .catch((error) => {
         console.log(error);
