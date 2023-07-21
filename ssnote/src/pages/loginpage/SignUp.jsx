@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { db, auth } from "../../firebase";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
 import "./SignUp.css"
 
 const SignUp = () => {
@@ -18,7 +19,11 @@ const SignUp = () => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log(userCredential);
+        console.log("Account successfully created: ", userCredential);
+        const userRef = doc(db, "users", userCredential.user.uid);
+        setDoc(userRef, {
+          email: {email}
+        })
         setShowModal(true);
       })
       .catch((error) => {
