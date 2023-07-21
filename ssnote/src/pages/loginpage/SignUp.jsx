@@ -15,16 +15,19 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const signUp = async (e) => {
+  const signUp = (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
-        const userRef = doc(db, "users", userCredential.user.uid);
-        setDoc(userRef, {
-          email: {email}
-        })
         setShowModal(true);
+        setError(null); // Clear any previous error if signup is successful
       })
       .catch((error) => {
         console.log(error);
