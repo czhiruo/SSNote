@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { auth } from "../../firebase";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import "./SignUp.css"
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -50,7 +51,7 @@ const SignUp = () => {
       {/* Modal for success message */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Sign Up Successful</Modal.Title>
+          <Modal.Title>Welcome to SSNote!</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           You have successfully signed up! Click the button below to proceed to the login page.
