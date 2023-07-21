@@ -35,6 +35,7 @@ let cheatsheetData = "no data";
 const EditorComponent = () => {
 
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
   const [pictureUrl, setPictureUrl] = useState('');
 
   const { noteTitle } = useParams();
