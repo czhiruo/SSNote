@@ -3,24 +3,34 @@ import React, { useState } from "react";
 import { auth } from "../../firebase";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./SignUp.css"
+import "./SignUp.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState(null);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const signUp = (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
         setShowModal(true);
+        setError(null); // Clear any previous error if signup is successful
       })
       .catch((error) => {
         console.log(error);
+        setError("Error signing up. Please try again later."); // Set error message in case of failure
       });
   };
 
@@ -45,6 +55,13 @@ const SignUp = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></input>
+        <input
+          type="password"
+          placeholder="Confirm your password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        ></input>
+        {error && <div className="error-message">{error}</div>}
         <button type="submit">Sign Up</button>
       </form>
 
@@ -67,3 +84,4 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
