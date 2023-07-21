@@ -28,10 +28,10 @@ function Home() {
     const userId = user.uid;
 
     // Create a reference to the user's collection of notes
-    const userDocRef = doc(db, "users", userId);
+    const userNotesRef = doc(db, "users", userId, "notes", newNoteTitle);
 
     // Create a new note document with a generated ID
-    await setDoc(userDocRef, {
+    await setDoc(userNotesRef, {
       title: newNoteTitle,
       content: "",
     })
