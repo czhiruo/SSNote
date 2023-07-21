@@ -4,12 +4,12 @@ import "./styles/Settings.css";
 import LogoutPopup from "./LogoutPopup";
 import DeleteAccountPopup from "./DeleteAccountPopup";
 import {
-  getAuth,
   updatePassword,
   updateEmail,
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from "firebase/auth";
+import { auth } from "../../firebase";
 
 // import LoginPage from './pages/loginpage/LoginPage';
 
@@ -30,7 +30,6 @@ const [isPasswordFormVisible, setPasswordFormVisible] = useState(false);
   const [passwordError, setPasswordError] = useState(null);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
-  const auth = getAuth();
   const user = auth.currentUser;
 
   const handleChangeEmail = () => {

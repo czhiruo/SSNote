@@ -1,9 +1,9 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../../firebase";
+import { db, auth } from "../../firebase";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./SignUp.css";
+import "./SignUp.css"
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -14,19 +14,12 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
-  const signUp = (e) => {
+  const signUp = async (e) => {
     e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
-
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         console.log(userCredential);
         setShowModal(true);
-        setError(null); // Clear any previous error if signup is successful
       })
       .catch((error) => {
         console.log(error);
