@@ -19,7 +19,7 @@ const SignUp = () => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log("Account successfully created: ", userCredential);
+        console.log(userCredential);
         const userRef = doc(db, "users", userCredential.user.uid);
         setDoc(userRef, {
           email: {email}
