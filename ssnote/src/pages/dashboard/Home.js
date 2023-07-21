@@ -50,7 +50,7 @@ function Home() {
 
       <div className="files">
         <div className="file">
-          <Link to="/file1">
+          <Link classNameto="/file1">
             <img src={file1} alt="file1" />
             <br />
 

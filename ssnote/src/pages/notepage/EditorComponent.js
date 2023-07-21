@@ -218,7 +218,11 @@ const EditorComponent = () => {
         </div>
       )}
 
+
       <div id="editorjs"></div>
+
+      <hr/>
+
       <button onClick={handleSaveData} type="button" className="btn btn-success">
         Save Note
       </button>

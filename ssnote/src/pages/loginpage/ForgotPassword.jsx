@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase";
+import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,7 @@ const ForgotPassword = () => {
   };
 
   return (
+    <div className="forgot-password-root">
     <div className="forgot-password-container">
       {!resetSent ? (
         <>
@@ -42,6 +44,7 @@ const ForgotPassword = () => {
           <Link to="/">Go back to Login</Link>
         </>
       )}
+    </div>
     </div>
   );
 };
