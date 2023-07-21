@@ -6,10 +6,9 @@ import Underline from "@editorjs/underline";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import { db, auth } from "../../firebase";
-import { addDoc } from '@firebase/firestore'
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { Link } from 'react-router-dom';
-import { doc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
 //default note
@@ -179,7 +178,10 @@ const EditorComponent = () => {
       const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase:");
-      addDoc(userNotesRef, savedData);
+      await updateDoc(userNotesRef,
+        {
+        "content": savedData
+      });
       cheatsheetData = savedData;
     } catch (error) {
       console.error("Error saving note to Firebase:", error);
