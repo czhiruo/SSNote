@@ -8,6 +8,7 @@ import { db, auth } from "../../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [newNoteTitle, setNewNoteTitle] = useState("");
@@ -15,6 +16,7 @@ function Home() {
   const [showPopup, setShowPopup] = useState(false); // State to manage the visibility of the popup
 
   const user = auth.currentUser;
+  const navigate = useNavigate();
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -28,15 +30,16 @@ function Home() {
     const userId = user.uid;
 
     // Create a reference to the user's collection of notes
-    const userDocRef = doc(db, "users", userId);
+    const userNotesRef = doc(db, "users", userId, "notes", newNoteTitle);
 
     // Create a new note document with a generated ID
-    await setDoc(userDocRef, {
+    await setDoc(userNotesRef, {
       title: newNoteTitle,
       content: "",
     })
       .then(() => {
         console.log("Note successfully created with Title: ", newNoteTitle);
+        navigate(`/notebook/${encodeURIComponent(newNoteTitle)}`);
       })
       .catch((error) => {
         console.error("Error adding note: ", error);

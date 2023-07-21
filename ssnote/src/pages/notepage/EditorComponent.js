@@ -5,10 +5,11 @@ import List from "@editorjs/list";
 import Underline from "@editorjs/underline";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
-import { db } from "../../firebase";
-import { addDoc, collection } from '@firebase/firestore'
+import { db, auth } from "../../firebase";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { Link } from 'react-router-dom';
+import { doc, updateDoc } from "firebase/firestore";
+import { useParams } from "react-router-dom";
 
 //default note
 const DEFAULT_INITIAL_DATA = {
@@ -34,7 +35,10 @@ let cheatsheetData = "no data";
 const EditorComponent = () => {
 
   const [showUrlInput, setShowUrlInput] = useState(false);
+  const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
   const [pictureUrl, setPictureUrl] = useState('');
+
+  const { noteTitle } = useParams();
 
   const wrapperRef = useRef(null);
 
@@ -167,12 +171,18 @@ const EditorComponent = () => {
 
   const handleSaveData = async () => {
     try {
-      // Add a new document to the 'notes' collection in Firestore
+      // Update document to the 'notes' collection in Firestore
+      const user = auth.currentUser;
+      const userId = user.uid;
+      
       const savedData = await ejInstance.current.save(); //data from editorjs
-      const ref = collection(db, "notes")
+      const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase:");
-      addDoc(ref, savedData);
+      await updateDoc(userNotesRef,
+        {
+        "content": savedData
+      });
       cheatsheetData = savedData;
     } catch (error) {
       console.error("Error saving note to Firebase:", error);
