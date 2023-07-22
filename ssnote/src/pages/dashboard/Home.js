@@ -146,8 +146,8 @@ function Home() {
         <div className="popup-container">
           <p>{selectedNote.title}</p>
           {/* Add your options or actions here */}
-          <button className='file-rename-button' onClick={handleFileMenuClose}>Rename File</button>
-          <button className='file-delete-button' onClick={handleFileMenuClose}>Delete file</button>
+          <button className='file-rename-button' onClick={handleFileMenuClose}>Rename Note</button>
+          <button className='file-delete-button' onClick={handleFileMenuClose}>Delete Note</button>
           <button className='file-close-button' onClick={handleFileMenuClose}> <AiOutlineClose/> Close</button> {/* Close button */}
         </div>
       )}
