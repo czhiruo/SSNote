@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef , useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import EditorJS from "@editorjs/editorjs";
 import List from "@editorjs/list";
@@ -7,8 +7,8 @@ import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import { db, auth } from "../../firebase";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { Link } from 'react-router-dom';
+import { doc, updateDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
 //default note
@@ -35,7 +35,8 @@ let cheatsheetData = "no data";
 const EditorComponent = () => {
 
   const [showUrlInput, setShowUrlInput] = useState(false);
-  const [pictureUrl, setPictureUrl] = useState("");
+  const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
+  const [pictureUrl, setPictureUrl] = useState('');
 
   const { noteTitle } = useParams();
 
@@ -83,6 +84,7 @@ const EditorComponent = () => {
       data: DEFAULT_INITIAL_DATA,
       onChange: async () => {
         let content = await editor.saver.save();
+
         console.log(content);
       },
       tools: {
@@ -177,8 +179,9 @@ const EditorComponent = () => {
       const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase:");
-      await updateDoc(userNotesRef, {
-        content: savedData,
+      await updateDoc(userNotesRef,
+        {
+        "content": savedData
       });
       cheatsheetData = savedData;
     } catch (error) {
@@ -187,34 +190,35 @@ const EditorComponent = () => {
   };
 
   return (
+    
     <>
-      <div className="above-notes">
-        <div className="return-link">
-          <Link to="/dashboard">
-            <AiOutlineDoubleLeft />
-            Return to Dashboard
-          </Link>
-        </div>
+      <div className='above-notes'>
+      <div className='return-link'>
+        <Link to='/dashboard'>
+          <AiOutlineDoubleLeft />
+          Return to Dashboard
+        </Link>
+      </div>
 
-        {/* Step 3: Render the button or the input field based on the flag */}
-        <div ref={wrapperRef}>
-          {showUrlInput ? (
-            <div>
-              <input
-                type="text"
-                value={pictureUrl}
-                onChange={handlePictureUrlChange}
-                placeholder="Enter picture URL"
-              />
-              <button onClick={handleClearUrl}>Clear URL</button>{" "}
-              {/* Step 9: Add the Clear URL button */}
-            </div>
-          ) : (
-            <div>
-              <button onClick={handleToggleInput}>Insert Cover Image</button>
-            </div>
-          )}
-        </div>
+      {/* Step 3: Render the button or the input field based on the flag */}
+      <div ref={wrapperRef}>
+        {showUrlInput ? (
+          <div>
+            <input
+              type="text"
+              value={pictureUrl}
+              onChange={handlePictureUrlChange}
+              placeholder="Enter picture URL"
+            />
+            <button onClick={handleClearUrl}>Clear URL</button> {/* Step 9: Add the Clear URL button */}
+          </div>
+        ) : (
+          <div>
+            <button onClick={handleToggleInput}>Insert Cover Image</button>
+          </div>
+        )}
+      </div>
+
       </div>
 
       {/* Step 6: Render the uploaded picture */}
@@ -226,6 +230,9 @@ const EditorComponent = () => {
 
 
       <div id="editorjs"></div>
+
+      <hr/>
+
       <button onClick={handleSaveData} type="button" className="btn btn-success">
         Save Note
       </button>
