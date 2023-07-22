@@ -6,11 +6,16 @@ import { FaPlus } from "react-icons/fa"; // Import the FaPlus icon for the plus 
 import { db, auth } from "../../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import { doc, setDoc, getDocs, collection } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  deleteDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
-
 
 function Home() {
   const [newNoteTitle, setNewNoteTitle] = useState("");
@@ -28,6 +33,26 @@ function Home() {
     setSelectedNote(null);
   };
 
+  const handleFileDelete = async () => {
+    if (!selectedNote) return;
+
+    const userId = user.uid;
+    const noteId = selectedNote.id;
+
+    try {
+      const userNoteRef = doc(db, "users", userId, "notes", noteId);
+      await deleteDoc(userNoteRef);
+
+      console.log("Note deleted successfully.");
+      handleFileMenuClose();
+
+      // After deleting the note, refresh the page to update the list of notes
+      fetchUserNotes();
+    } catch (error) {
+      console.error("Error deleting note:", error);
+    }
+  };
+
   const handleFileMenuToggle = (note, event) => {
     if (showFileMenu && selectedNote && selectedNote.id === note.id) {
       // If the same button is clicked again, close the menu
@@ -35,12 +60,12 @@ function Home() {
     } else {
       // Otherwise, open the menu
       setSelectedNote(note);
+      console.log(note.id);
       const buttonRect = event.target.getBoundingClientRect();
       setPopupPosition({ left: buttonRect.right, top: buttonRect.bottom });
       setShowFileMenu(true);
     }
   };
-
 
   const fetchUserNotes = async () => {
     try {
@@ -51,6 +76,8 @@ function Home() {
         id: doc.id,
         title: doc.data().title,
       }));
+      //notesData is an array of notes with the id & title of each note
+      console.log("fetching notes data:" , notesData);
       setUserNotes(notesData);
     } catch (error) {
       console.error("Error fetching user notes: ", error);
@@ -59,22 +86,21 @@ function Home() {
 
   useEffect(() => {
     fetchUserNotes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const DEFAULT_INITIAL_DATA = {
-  time: new Date().getTime(),
-  blocks: [
-    {
-      type: "header",
-      data: {
-        text: "Title",
-        level: 1,
+    time: new Date().getTime(),
+    blocks: [
+      {
+        type: "header",
+        data: {
+          text: "Title",
+          level: 1,
+        },
       },
-    },
-  ],
-};
-
+    ],
+  };
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -137,9 +163,14 @@ function Home() {
       {selectedNote && (
         <div className="popup-container">
           <p>{selectedNote.title}</p>
-          <button className='file-rename-button' onClick={handleFileMenuClose}>Rename Note</button>
-          <button className='file-delete-button' onClick={handleFileMenuClose}>Delete Note</button>
-          <button className='file-close-button' onClick={handleFileMenuClose}> <AiOutlineClose/> Close</button> {/* Close button */}
+          <button className="file-delete-button" onClick={handleFileDelete}>
+            Delete Note
+          </button>
+          <button className="file-close-button" onClick={handleFileMenuClose}>
+            {" "}
+            <AiOutlineClose /> Close
+          </button>{" "}
+          {/* Close button */}
         </div>
       )}
 
