@@ -11,9 +11,13 @@ const NoteSearch = ({ userNotes, navigate }) => {
     navigate(`/notebook/${encodeURIComponent(noteTitle)}`);
   };
 
-  const filteredNotes = userNotes.filter((note) =>
-    note.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Check if userNotes exists and is an array before using the filter method
+  const filteredNotes =
+    userNotes && Array.isArray(userNotes)
+      ? userNotes.filter((note) =>
+          note.title.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : [];
 
   return (
     <div>
