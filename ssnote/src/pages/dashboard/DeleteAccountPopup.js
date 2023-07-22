@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { auth } from "../../firebase";
+import { db, auth } from "../../firebase";
 import { deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import { deleteDoc, doc } from "firebase/firestore";
 
 const DeleteAccountPopup = ({ onCancel }) => {
   const [email, setEmail] = useState("");
@@ -10,14 +11,13 @@ const DeleteAccountPopup = ({ onCancel }) => {
 
   const user = auth.currentUser;
 
-  const handleDeleteAccountConfirm = () => {
+  const handleDeleteAccountConfirm = async () => {
     setError(null);
 
     if (!email || !password) {
       setError("Please enter your email and password.");
       return;
     }
-
     const credentials = EmailAuthProvider.credential(email, password);
 
     // Perform reauthentication with the provided credentials
@@ -27,6 +27,7 @@ const DeleteAccountPopup = ({ onCancel }) => {
         deleteUser(user)
           .then(() => {
             console.log("Account Deleted");
+            deleteDoc(doc(db, "users", user.uid))
           })
           .catch((error) => {
             console.log(error.message);

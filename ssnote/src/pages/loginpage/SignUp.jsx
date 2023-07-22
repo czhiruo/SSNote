@@ -4,7 +4,7 @@ import { db, auth } from "../../firebase";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
-import "./SignUp.css"
+import "./SignUp.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -28,6 +28,20 @@ const SignUp = () => {
         console.log(userCredential);
         setShowModal(true);
         setError(null); // Clear any previous error if signup is successful
+        //save it to users collection
+        const user = userCredential.user;
+        const userDocRef = doc(db, "users", user.uid);
+
+        const userData = {
+          email: user.email,
+        };
+        setDoc(userDocRef, userData)
+          .then(() => {
+            console.log("User data saved to Firestore.");
+          })
+          .catch((error) => {
+            console.error("Error saving user data:", error);
+          });
       })
       .catch((error) => {
         console.log(error);
@@ -42,49 +56,49 @@ const SignUp = () => {
 
   return (
     <div className="sign-up-root">
-    <div className="sign-in-container">
-      <form onSubmit={signUp}>
-        <h1>Create Account</h1>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></input>
-        <input
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-        <input
-          type="password"
-          placeholder="Confirm your password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        ></input>
-        {error && <div className="error-message">{error}</div>}
-        <button type="submit">Sign Up</button>
-      </form>
+      <div className="sign-in-container">
+        <form onSubmit={signUp}>
+          <h1>Create Account</h1>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+          <input
+            type="password"
+            placeholder="Confirm your password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          ></input>
+          {error && <div className="error-message">{error}</div>}
+          <button type="submit">Sign Up</button>
+        </form>
 
-      {/* Modal for success message */}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Welcome to SSNote!</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          You have successfully signed up! Click the button below to proceed to the login page.
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+        {/* Modal for success message */}
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Welcome to SSNote!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            You have successfully signed up! Click the button below to proceed
+            to the login page.
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </div>
   );
 };
 
 export default SignUp;
-
