@@ -118,7 +118,6 @@ const EditorComponent = () => {
       data: initialNoteData !== null ? initialNoteData : DEFAULT_INITIAL_DATA,
       onChange: async () => {
         let content = await editor.saver.save();
-
         console.log(content);
       },
       tools: {
@@ -213,7 +212,7 @@ const EditorComponent = () => {
       const savedData = await ejInstance.current.save(); //data from editorjs
       const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
-      console.log("Note saved to Firebase:");
+      console.log("Note saved to Firebase:", savedData);
       await updateDoc(userNotesRef, {
         content: savedData,
       });
