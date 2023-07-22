@@ -41,6 +41,7 @@ const SignUp = () => {
   };
 
   return (
+    <div className="sign-up-root">
     <div className="sign-in-container">
       <form onSubmit={signUp}>
         <h1>Create Account</h1>
@@ -80,6 +81,7 @@ const SignUp = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+    </div>
     </div>
   );
 };

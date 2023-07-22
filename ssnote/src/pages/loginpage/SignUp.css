@@ -1,8 +1,18 @@
 /* SignUp.css */
 
+.sign-up-root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+
 /* Styles for the sign-in container */
 .sign-in-container {
     max-width: 400px;
+    min-width: 350px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;

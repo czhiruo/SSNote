@@ -11,6 +11,20 @@ import { Link } from "react-router-dom";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
+//default note
+const DEFAULT_INITIAL_DATA = {
+  time: new Date().getTime(),
+  blocks: [
+    {
+      type: "header",
+      data: {
+        text: "Title",
+        level: 1,
+      },
+    },
+  ],
+};
+
 //editor tools
 
 const AlignmentTuneTool = require("editorjs-text-alignment-blocktune");
@@ -19,6 +33,7 @@ const ColorPlugin = require("editorjs-text-color-plugin");
 let cheatsheetData = "no data";
 
 const EditorComponent = () => {
+
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [pictureUrl, setPictureUrl] = useState("");
 
@@ -47,7 +62,7 @@ const EditorComponent = () => {
 
   const handleClearUrl = () => {
     // Step 8: Clear the URL and hide the input field
-    setPictureUrl("");
+    setPictureUrl('');
     setShowUrlInput(false);
   };
 
@@ -55,10 +70,6 @@ const EditorComponent = () => {
     // Step 4: Update the state with the entered URL
     setPictureUrl(event.target.value);
   };
-
-  const user = auth.currentUser;
-  const userId = user.uid;
-  const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
   const ejInstance = useRef();
 
@@ -69,7 +80,7 @@ const EditorComponent = () => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: userNotesRef.content,
+      data: DEFAULT_INITIAL_DATA,
       onChange: async () => {
         let content = await editor.saver.save();
         console.log(content);
@@ -144,7 +155,6 @@ const EditorComponent = () => {
       },
     });
   };
-
   // This will run only once
   useEffect(() => {
     if (ejInstance.current === null) {
@@ -160,8 +170,11 @@ const EditorComponent = () => {
   const handleSaveData = async () => {
     try {
       // Update document to the 'notes' collection in Firestore
-
+      const user = auth.currentUser;
+      const userId = user.uid;
+      
       const savedData = await ejInstance.current.save(); //data from editorjs
+      const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase:");
       await updateDoc(userNotesRef, {
@@ -207,23 +220,13 @@ const EditorComponent = () => {
       {/* Step 6: Render the uploaded picture */}
       {pictureUrl && (
         <div>
-          <img
-            src={pictureUrl}
-            alt="Uploaded"
-            style={{ width: "100%", height: "auto" }}
-          />
+          <img src={pictureUrl} alt="Uploaded" style={{ width: '100%', height: 'auto' }} />
         </div>
       )}
 
+
       <div id="editorjs"></div>
-
-      <hr />
-
-      <button
-        onClick={handleSaveData}
-        type="button"
-        className="btn btn-success"
-      >
+      <button onClick={handleSaveData} type="button" className="btn btn-success">
         Save Note
       </button>
     </>
