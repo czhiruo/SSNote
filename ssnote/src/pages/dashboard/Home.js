@@ -23,7 +23,6 @@ function Home() {
   const [showFileMenu, setShowFileMenu] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ left: 0, top: 0 });
-  // const [selectedNote, setSelectedNote] = useState(null);
 
 
   const handleFileMenuClick = (note, event) => {
