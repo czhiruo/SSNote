@@ -1,4 +1,4 @@
-import React, { useEffect, useRef , useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import EditorJS from "@editorjs/editorjs";
 import List from "@editorjs/list";
@@ -7,23 +7,9 @@ import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import { db, auth } from "../../firebase";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
-import { Link } from 'react-router-dom';
-import { doc, updateDoc } from "firebase/firestore";
+import { Link } from "react-router-dom";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
-
-//default note
-const DEFAULT_INITIAL_DATA = {
-  time: new Date().getTime(),
-  blocks: [
-    {
-      type: "header",
-      data: {
-        text: "Title",
-        level: 1,
-      },
-    },
-  ],
-};
 
 //editor tools
 
@@ -33,10 +19,8 @@ const ColorPlugin = require("editorjs-text-color-plugin");
 let cheatsheetData = "no data";
 
 const EditorComponent = () => {
-
   const [showUrlInput, setShowUrlInput] = useState(false);
-  const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
-  const [pictureUrl, setPictureUrl] = useState('');
+  const [pictureUrl, setPictureUrl] = useState("");
 
   const { noteTitle } = useParams();
 
@@ -63,7 +47,7 @@ const EditorComponent = () => {
 
   const handleClearUrl = () => {
     // Step 8: Clear the URL and hide the input field
-    setPictureUrl('');
+    setPictureUrl("");
     setShowUrlInput(false);
   };
 
@@ -71,6 +55,10 @@ const EditorComponent = () => {
     // Step 4: Update the state with the entered URL
     setPictureUrl(event.target.value);
   };
+
+  const user = auth.currentUser;
+  const userId = user.uid;
+  const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
   const ejInstance = useRef();
 
@@ -81,10 +69,9 @@ const EditorComponent = () => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: DEFAULT_INITIAL_DATA,
+      data: userNotesRef.content,
       onChange: async () => {
         let content = await editor.saver.save();
-
         console.log(content);
       },
       tools: {
@@ -157,6 +144,7 @@ const EditorComponent = () => {
       },
     });
   };
+
   // This will run only once
   useEffect(() => {
     if (ejInstance.current === null) {
@@ -172,16 +160,12 @@ const EditorComponent = () => {
   const handleSaveData = async () => {
     try {
       // Update document to the 'notes' collection in Firestore
-      const user = auth.currentUser;
-      const userId = user.uid;
-      
+
       const savedData = await ejInstance.current.save(); //data from editorjs
-      const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase:");
-      await updateDoc(userNotesRef,
-        {
-        "content": savedData
+      await updateDoc(userNotesRef, {
+        content: savedData,
       });
       cheatsheetData = savedData;
     } catch (error) {
@@ -190,46 +174,56 @@ const EditorComponent = () => {
   };
 
   return (
-    
     <>
-      <div className='above-notes'>
-      <div className='return-link'>
-        <Link to='/dashboard'>
-          <AiOutlineDoubleLeft />
-          Return to Dashboard
-        </Link>
-      </div>
+      <div className="above-notes">
+        <div className="return-link">
+          <Link to="/dashboard">
+            <AiOutlineDoubleLeft />
+            Return to Dashboard
+          </Link>
+        </div>
 
-      {/* Step 3: Render the button or the input field based on the flag */}
-      <div ref={wrapperRef}>
-        {showUrlInput ? (
-          <div>
-            <input
-              type="text"
-              value={pictureUrl}
-              onChange={handlePictureUrlChange}
-              placeholder="Enter picture URL"
-            />
-            <button onClick={handleClearUrl}>Clear URL</button> {/* Step 9: Add the Clear URL button */}
-          </div>
-        ) : (
-          <div>
-            <button onClick={handleToggleInput}>Insert Cover Image</button>
-          </div>
-        )}
-      </div>
-
+        {/* Step 3: Render the button or the input field based on the flag */}
+        <div ref={wrapperRef}>
+          {showUrlInput ? (
+            <div>
+              <input
+                type="text"
+                value={pictureUrl}
+                onChange={handlePictureUrlChange}
+                placeholder="Enter picture URL"
+              />
+              <button onClick={handleClearUrl}>Clear URL</button>{" "}
+              {/* Step 9: Add the Clear URL button */}
+            </div>
+          ) : (
+            <div>
+              <button onClick={handleToggleInput}>Insert Cover Image</button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Step 6: Render the uploaded picture */}
       {pictureUrl && (
         <div>
-          <img src={pictureUrl} alt="Uploaded" style={{ width: '100%', height: 'auto' }} />
+          <img
+            src={pictureUrl}
+            alt="Uploaded"
+            style={{ width: "100%", height: "auto" }}
+          />
         </div>
       )}
 
       <div id="editorjs"></div>
-      <button onClick={handleSaveData} type="button" className="btn btn-success">
+
+      <hr />
+
+      <button
+        onClick={handleSaveData}
+        type="button"
+        className="btn btn-success"
+      >
         Save Note
       </button>
     </>

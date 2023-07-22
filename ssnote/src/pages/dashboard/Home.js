@@ -1,22 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./styles/Home.css";
 import file1 from "./assets/math-curriculum copy.webp";
-import file2 from "./assets/science.banner2 copy.png";
 import { FaPlus } from "react-icons/fa"; // Import the FaPlus icon for the plus button
 import { db, auth } from "../../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [newNoteTitle, setNewNoteTitle] = useState("");
-
+  const [userNotes, setUserNotes] = useState([]);
   const [showPopup, setShowPopup] = useState(false); // State to manage the visibility of the popup
 
   const user = auth.currentUser;
   const navigate = useNavigate();
+
+  const fetchUserNotes = async () => {
+    try {
+      const userId = user.uid;
+      const userNotesRef = collection(db, "users", userId, "notes");
+      const notesSnapshot = await getDocs(userNotesRef);
+      const notesData = notesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        title: doc.data().title,
+      }));
+      setUserNotes(notesData);
+    } catch (error) {
+      console.error("Error fetching user notes: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserNotes();
+  }, [user]);
+
+  const DEFAULT_INITIAL_DATA = {
+  time: new Date().getTime(),
+  blocks: [
+    {
+      type: "header",
+      data: {
+        text: "Title",
+        level: 1,
+      },
+    },
+  ],
+};
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -35,7 +66,7 @@ function Home() {
     // Create a new note document with a generated ID
     await setDoc(userNotesRef, {
       title: newNoteTitle,
-      content: "",
+      content: DEFAULT_INITIAL_DATA,
     })
       .then(() => {
         console.log("Note successfully created with Title: ", newNoteTitle);
@@ -52,24 +83,17 @@ function Home() {
       <hr />
 
       <div className="files">
-        <div className="file">
-          <Link to="/file1">
-            <img src={file1} alt="file1" />
-            <br />
-
-            <span className="file-title">File1</span>
-          </Link>
-        </div>
-
-        <br />
-
-        <div className="file">
-          <Link to="/file2">
-            <img src={file2} alt="file2" />
-            <br />
-            <span className="file-title">File2</span>
-          </Link>
-        </div>
+        {/* Step 3: Dynamically render the list of files based on the user's notes data */}
+        {userNotes.map((note) => (
+          <div className="file" key={note.id}>
+            <Link to={`/notebook/${encodeURIComponent(note.title)}`}>
+              {/* You can also use different images for each file if available */}
+              <img src={file1} alt="file1" />
+              <br />
+              <span className="file-title">{note.title}</span>
+            </Link>
+          </div>
+        ))}
       </div>
 
       {/* Plus button */}
