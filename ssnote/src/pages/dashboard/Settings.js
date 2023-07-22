@@ -197,7 +197,7 @@ const Settings = () => {
               <button onClick={() => setShowEmailInput(false)}>Cancel</button>
               <br />
               {emailSuccess && <p>Email updated successfully.</p>}
-              {emailError && <p>Error: {emailError}</p>}
+              {emailError && <p className="error-message">{emailError}</p>}
             </div>
           )}
         </span>
@@ -215,7 +215,7 @@ const Settings = () => {
           {showPasswordSuccessMessage && (
             <p className="success-message">Password updated successfully.</p>
           )}
-          {passwordError && <p>Error: {passwordError}</p>}
+          {passwordError && <p className="error-message">{passwordError}</p>}
           {isPasswordFormVisible && (
             <div>
               <input
