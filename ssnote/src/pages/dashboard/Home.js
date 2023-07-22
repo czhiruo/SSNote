@@ -68,6 +68,7 @@ function Home() {
 
   useEffect(() => {
     fetchUserNotes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const DEFAULT_INITIAL_DATA = {
