@@ -37,11 +37,6 @@
     padding: 8px;
 }
 
-#email-button, #password-button {
-    /* float: right; */
-    /* margin-right: auto; */
-}
-
 #delete-account, #confirm-delete {
     color: rgb(212, 5, 5);
 }
@@ -58,5 +53,9 @@
 
 .change-password {
     margin: 5px;
+}
+
+.error-message {
+    color: red;
 }
 

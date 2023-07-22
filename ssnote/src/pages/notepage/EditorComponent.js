@@ -52,7 +52,7 @@ const EditorComponent = () => {
       console.log("fetching data...", noteData.content);
 
       // If note data exists, set the initial data for the EditorJS instance
-      if (noteData && noteData.content) {
+      if (noteData && noteData.content !== "") {
         setInitialNoteData(noteData.content);
         console.log(noteData.content);
       }
@@ -115,7 +115,7 @@ const EditorComponent = () => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: initialNoteData != null ? initialNoteData : DEFAULT_INITIAL_DATA,
+      data: initialNoteData !== null ? initialNoteData : DEFAULT_INITIAL_DATA,
       onChange: async () => {
         let content = await editor.saver.save();
 
