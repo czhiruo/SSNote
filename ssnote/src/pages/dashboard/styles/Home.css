@@ -62,7 +62,7 @@
     padding-right: 3px;
     padding-bottom: 0;
     font-size: larger;
-    background-color: white;
+    background:none;
     border: none;
     border-radius: 4px;
     float: right;
@@ -70,10 +70,10 @@
     margin-top: 0px;
     z-index: 10;
 }
-
+/* 
 .home button:hover {
     background-color: rgb(244, 244, 244);
-}
+} */
 
 .home img {
     width: 200px;
@@ -137,5 +137,5 @@
 
   .file-close-button {
 
-    
+
   }
