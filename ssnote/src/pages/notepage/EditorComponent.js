@@ -36,6 +36,7 @@ const EditorComponent = () => {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [pictureUrl, setPictureUrl] = useState("");
   const [initialNoteData, setInitialNoteData] = useState(null);
+  const [isSavedMessageVisible, setIsSavedMessageVisible] = useState(false);
 
   const { noteTitle } = useParams();
 
@@ -64,6 +65,16 @@ const EditorComponent = () => {
     // Fetch the note data when the component mounts
     fetchNoteData();
   }, [noteTitle]); // Fetch note data whenever the noteTitle changes (i.e., when a new note is loaded)
+
+  //saved message
+  const showSavedMessage = () => {
+    setIsSavedMessageVisible(true);
+
+    // Hide the message after 5 seconds
+    setTimeout(() => {
+      setIsSavedMessageVisible(false);
+    }, 5000);
+  };
 
   //display picture
   const wrapperRef = useRef(null);
@@ -207,6 +218,7 @@ const EditorComponent = () => {
         content: savedData,
       });
       cheatsheetData = savedData;
+      showSavedMessage();
     } catch (error) {
       console.error("Error saving note to Firebase:", error);
     }
@@ -265,6 +277,9 @@ const EditorComponent = () => {
       >
         Save Note
       </button>
+      {isSavedMessageVisible && (
+        <div className="saved-message">Note has been saved successfully!</div>
+      )}
     </>
   );
 };

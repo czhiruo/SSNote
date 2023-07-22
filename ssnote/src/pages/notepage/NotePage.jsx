@@ -7,6 +7,7 @@ function Notepage() {
   return (
     <div className="App">
       <EditorComponent />
+      <br />
       <ConvertButton />
     </div>
   );
