@@ -115,7 +115,7 @@ const EditorComponent = () => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: initialNoteData,
+      data: initialNoteData != null ? initialNoteData : DEFAULT_INITIAL_DATA,
       onChange: async () => {
         let content = await editor.saver.save();
 
@@ -194,7 +194,7 @@ const EditorComponent = () => {
 
   // This will run only once
   useEffect(() => {
-    if (initialNoteData !== null && ejInstance.current === null) {
+    if (initialNoteData !== "" && ejInstance.current === null) {
       initEditor();
     }
 
