@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./styles/Home.css";
-import file1 from "./assets/math-curriculum copy.webp";
+import file1 from "./assets/Screenshot.png";
 import { FaPlus } from "react-icons/fa"; // Import the FaPlus icon for the plus button
 import { db, auth } from "../../firebase";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { AiOutlineClose } from "react-icons/ai";
+
 
 function Home() {
   const [newNoteTitle, setNewNoteTitle] = useState("");
@@ -16,6 +19,37 @@ function Home() {
 
   const user = auth.currentUser;
   const navigate = useNavigate();
+
+  const [showFileMenu, setShowFileMenu] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [popupPosition, setPopupPosition] = useState({ left: 0, top: 0 });
+  // const [selectedNote, setSelectedNote] = useState(null);
+
+
+  const handleFileMenuClick = (note, event) => {
+    setSelectedNote(note);
+    const buttonRect = event.target.getBoundingClientRect();
+    setPopupPosition({ left: buttonRect.right, top: buttonRect.top });
+  };
+
+
+  const handleFileMenuClose = () => {
+    setSelectedNote(null);
+  };
+
+  const handleFileMenuToggle = (note, event) => {
+    if (showFileMenu && selectedNote && selectedNote.id === note.id) {
+      // If the same button is clicked again, close the menu
+      handleFileMenuClose();
+    } else {
+      // Otherwise, open the menu
+      setSelectedNote(note);
+      const buttonRect = event.target.getBoundingClientRect();
+      setPopupPosition({ left: buttonRect.right, top: buttonRect.bottom });
+      setShowFileMenu(true);
+    }
+  };
+
 
   const fetchUserNotes = async () => {
     try {
@@ -49,6 +83,7 @@ function Home() {
   ],
 };
 
+
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -81,7 +116,6 @@ function Home() {
     <div className="home">
       <p id="dashboard-title">Dashboard</p>
       <hr />
-
       <div className="files">
         {/* Step 3: Dynamically render the list of files based on the user's notes data */}
         {userNotes.map((note) => (
@@ -92,6 +126,12 @@ function Home() {
               <br />
               <span className="file-title">{note.title}</span>
             </Link>
+            <button
+              className="file-menu-button"
+              onClick={(event) => handleFileMenuToggle(note, event)}
+            >
+              <BsThreeDotsVertical />
+            </button>
           </div>
         ))}
       </div>
@@ -102,6 +142,16 @@ function Home() {
       </button>
 
       {/* Popup container */}
+      {selectedNote && (
+        <div className="popup-container">
+          <p>{selectedNote.title}</p>
+          {/* Add your options or actions here */}
+          <button className='file-rename-button' onClick={handleFileMenuClose}>Rename File</button>
+          <button className='file-delete-button' onClick={handleFileMenuClose}>Delete file</button>
+          <button className='file-close-button' onClick={handleFileMenuClose}> <AiOutlineClose/> Close</button> {/* Close button */}
+        </div>
+      )}
+
       {showPopup && (
         <div className="popup-container">
           {/* Add your content/form for creating a new file here */}
@@ -111,10 +161,11 @@ function Home() {
             onChange={handleTitleChange}
             placeholder="Enter Note Title"
           />
-          <button id="create-folder" onClick={handleCreateNote}>
-            <h3>Create New Note</h3>
-          </button>
           <br />
+          <button id="create-folder" onClick={handleCreateNote}>
+            <p>Create New Note</p>
+          </button>
+          {/* <br /> */}
           {/* Add your form or content here */}
           <button onClick={togglePopup}>Close</button>
         </div>

@@ -81,6 +81,7 @@
     object-fit: cover;
     border-bottom: 1px solid black;
     margin-bottom: 5px;
+    border-radius: 4px;
 }
 
 
@@ -101,13 +102,40 @@
   }
 
 
-.popup-container {
-    margin-top: 0px;
+
+  .popup-container {
     position: fixed;
-    bottom: 80px;
-    right: 20px;
-    padding: 20px;
+    z-index: 9999;
     background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    /* Add any other styles you want for the popup container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+    min-width: 250px; /* Minimum width of the popup */
+    border-radius: 4px;
+    text-align: center;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .popup-container p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .popup-container button {
+    margin: 5px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #e3e3e3;
+    color: #000000;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .file-close-button {
+
+    
   }
