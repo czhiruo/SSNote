@@ -9,21 +9,16 @@ import "firebase/compat/firestore";
 import {
   doc,
   setDoc,
-  getDocs,
-  collection,
   deleteDoc,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 
-function Home() {
+function Home({navigate, fetchUserNotes, userNotes}) {
   const [newNoteTitle, setNewNoteTitle] = useState("");
-  const [userNotes, setUserNotes] = useState([]);
   const [showPopup, setShowPopup] = useState(false); // State to manage the visibility of the popup
 
   const user = auth.currentUser;
-  const navigate = useNavigate();
 
   const [showFileMenu, setShowFileMenu] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -64,23 +59,6 @@ function Home() {
       const buttonRect = event.target.getBoundingClientRect();
       setPopupPosition({ left: buttonRect.right, top: buttonRect.bottom });
       setShowFileMenu(true);
-    }
-  };
-
-  const fetchUserNotes = async () => {
-    try {
-      const userId = user.uid;
-      const userNotesRef = collection(db, "users", userId, "notes");
-      const notesSnapshot = await getDocs(userNotesRef);
-      const notesData = notesSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        title: doc.data().title,
-      }));
-      //notesData is an array of notes with the id & title of each note
-      console.log("fetching notes data:" , notesData);
-      setUserNotes(notesData);
-    } catch (error) {
-      console.error("Error fetching user notes: ", error);
     }
   };
 
