@@ -1,12 +1,42 @@
-// src/DeleteAccountPopup.js
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { auth } from "../../firebase";
+import { deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 
-const DeleteAccountPopup = ({ onCancel, onDelete }) => {
+const DeleteAccountPopup = ({ onCancel }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-    
+  const user = auth.currentUser;
+
+  const handleDeleteAccountConfirm = () => {
+    setError(null);
+
+    if (!email || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
+
+    const credentials = EmailAuthProvider.credential(email, password);
+
+    // Perform reauthentication with the provided credentials
+    reauthenticateWithCredential(user, credentials)
+      .then(() => {
+        // Reauthentication successful, proceed with account deletion
+        deleteUser(user)
+          .then(() => {
+            console.log("Account Deleted");
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      })
+      .catch((error) => {
+        setError("Invalid email or password. Please try again.");
+        console.log(error.message);
+      });
+  };
 
   return (
     <div className="popup-container">
@@ -16,11 +46,13 @@ const DeleteAccountPopup = ({ onCancel, onDelete }) => {
         </span>
         <h2>Confirm Account Deletion</h2>
         <p>Are you sure you want to delete your account?</p>
-        <p>This action is <b>irreversible</b>.</p>
+        <p>
+          This action is <b>irreversible</b>.
+        </p>
 
         <form>
-        <label htmlFor="email">Email</label>
-        <br/>
+          <label htmlFor="email">Email</label>
+          <br />
           <input
             type="email"
             id="email-confirm"
@@ -29,8 +61,8 @@ const DeleteAccountPopup = ({ onCancel, onDelete }) => {
             required
           />
 
-          <br/>
-          
+          <br />
+
           <label htmlFor="password">Password</label>
           <br />
           <input
@@ -42,14 +74,17 @@ const DeleteAccountPopup = ({ onCancel, onDelete }) => {
           />
         </form>
 
-        <br/>
+        {error && <p className="error-message">{error}</p>}
+
+        <br />
 
         <div className="popup-actions">
           <button onClick={onCancel}>Cancel</button>
-          <Link to='/account-deleted'>
-            <button onClick={onDelete} id='confirm-delete'>Delete Account</button>
+          <Link to="/account-deleted">
+            <button onClick={handleDeleteAccountConfirm} id="confirm-delete">
+              Delete Account
+            </button>
           </Link>
-          
         </div>
       </div>
     </div>

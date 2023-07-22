@@ -24,14 +24,6 @@ function Home() {
   const [selectedNote, setSelectedNote] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ left: 0, top: 0 });
 
-
-  const handleFileMenuClick = (note, event) => {
-    setSelectedNote(note);
-    const buttonRect = event.target.getBoundingClientRect();
-    setPopupPosition({ left: buttonRect.right, top: buttonRect.top });
-  };
-
-
   const handleFileMenuClose = () => {
     setSelectedNote(null);
   };
@@ -145,7 +137,6 @@ function Home() {
       {selectedNote && (
         <div className="popup-container">
           <p>{selectedNote.title}</p>
-          {/* Add your options or actions here */}
           <button className='file-rename-button' onClick={handleFileMenuClose}>Rename Note</button>
           <button className='file-delete-button' onClick={handleFileMenuClose}>Delete Note</button>
           <button className='file-close-button' onClick={handleFileMenuClose}> <AiOutlineClose/> Close</button> {/* Close button */}

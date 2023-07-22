@@ -145,12 +145,6 @@ const Settings = () => {
     );
   };
 
-  const handleDeleteAccountConfirm = () => {
-    // Perform delete account actions here
-    console.log("Performing delete account actions...");
-    handleDeleteAccountPopupToggle(); // Close the pop-up after delete account actions
-  };
-
   return (
     <div>
       <Sidebar />
@@ -277,7 +271,6 @@ const Settings = () => {
         {isDeleteAccountPopupOpen && (
           <DeleteAccountPopup
             onCancel={handleDeleteAccountPopupToggle}
-            onDelete={handleDeleteAccountConfirm}
           />
         )}
       </div>
