@@ -1,4 +1,4 @@
-import React, { useEffect, useRef , useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import EditorJS from "@editorjs/editorjs";
 import List from "@editorjs/list";
@@ -7,8 +7,8 @@ import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
 import { db, auth } from "../../firebase";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
-import { Link } from 'react-router-dom';
-import { doc, updateDoc } from "firebase/firestore";
+import { Link } from "react-router-dom";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 
 //default note
@@ -33,17 +33,41 @@ const ColorPlugin = require("editorjs-text-color-plugin");
 let cheatsheetData = "no data";
 
 const EditorComponent = () => {
-
   const [showUrlInput, setShowUrlInput] = useState(false);
-  const [editorData, setEditorData] = useState(DEFAULT_INITIAL_DATA);
-  const [pictureUrl, setPictureUrl] = useState('');
+  const [pictureUrl, setPictureUrl] = useState("");
+  const [initialNoteData, setInitialNoteData] = useState(null);
 
   const { noteTitle } = useParams();
 
-  const wrapperRef = useRef(null);
+  const fetchNoteData = async () => {
+    try {
+      const user = auth.currentUser;
+      const userId = user.uid;
 
+      // Fetch the note data from Firestore using the noteTitle from the URL params
+      const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
+      const noteSnapshot = await getDoc(userNotesRef);
+      const noteData = noteSnapshot.data();
+      console.log("fetching data...", noteData.content);
+
+      // If note data exists, set the initial data for the EditorJS instance
+      if (noteData && noteData.content) {
+        setInitialNoteData(noteData.content);
+        console.log(noteData.content);
+      }
+    } catch (error) {
+      console.error("Error fetching note data:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch the note data when the component mounts
+    fetchNoteData();
+  }, [noteTitle]); // Fetch note data whenever the noteTitle changes (i.e., when a new note is loaded)
+
+  //display picture
+  const wrapperRef = useRef(null);
   const handleClickOutside = (event) => {
-    // Step 7: Handle click outside the wrapper div to hide the URL input
     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
       setShowUrlInput(false);
     }
@@ -57,31 +81,30 @@ const EditorComponent = () => {
   }, []);
 
   const handleToggleInput = () => {
-    // Step 2: Toggle the flag when the button is clicked
     setShowUrlInput((prevShowUrlInput) => !prevShowUrlInput);
   };
 
   const handleClearUrl = () => {
-    // Step 8: Clear the URL and hide the input field
-    setPictureUrl('');
+    setPictureUrl("");
     setShowUrlInput(false);
   };
 
   const handlePictureUrlChange = (event) => {
-    // Step 4: Update the state with the entered URL
     setPictureUrl(event.target.value);
   };
 
   const ejInstance = useRef();
 
+  //initialise editor with tools
   const initEditor = () => {
+    console.log("starting up...", initialNoteData);
     const editor = new EditorJS({
       holder: "editorjs",
       onReady: () => {
         ejInstance.current = editor;
       },
       autofocus: true,
-      data: DEFAULT_INITIAL_DATA,
+      data: initialNoteData,
       onChange: async () => {
         let content = await editor.saver.save();
 
@@ -157,9 +180,10 @@ const EditorComponent = () => {
       },
     });
   };
+
   // This will run only once
   useEffect(() => {
-    if (ejInstance.current === null) {
+    if (initialNoteData !== null && ejInstance.current === null) {
       initEditor();
     }
 
@@ -167,21 +191,20 @@ const EditorComponent = () => {
       ejInstance?.current?.destroy();
       ejInstance.current = null;
     };
-  }, []);
+  }, [initialNoteData]);
 
+  // Update document to the 'notes' collection in Firestore
   const handleSaveData = async () => {
     try {
-      // Update document to the 'notes' collection in Firestore
       const user = auth.currentUser;
       const userId = user.uid;
-      
+
       const savedData = await ejInstance.current.save(); //data from editorjs
       const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase:");
-      await updateDoc(userNotesRef,
-        {
-        "content": savedData
+      await updateDoc(userNotesRef, {
+        content: savedData,
       });
       cheatsheetData = savedData;
     } catch (error) {
@@ -190,50 +213,56 @@ const EditorComponent = () => {
   };
 
   return (
-    
     <>
-      <div className='above-notes'>
-      <div className='return-link'>
-        <Link to='/dashboard'>
-          <AiOutlineDoubleLeft />
-          Return to Dashboard
-        </Link>
-      </div>
+      <div className="above-notes">
+        <div className="return-link">
+          <Link to="/dashboard">
+            <AiOutlineDoubleLeft />
+            Return to Dashboard
+          </Link>
+        </div>
 
-      {/* Step 3: Render the button or the input field based on the flag */}
-      <div ref={wrapperRef}>
-        {showUrlInput ? (
-          <div>
-            <input
-              type="text"
-              value={pictureUrl}
-              onChange={handlePictureUrlChange}
-              placeholder="Enter picture URL"
-            />
-            <button onClick={handleClearUrl}>Clear URL</button> {/* Step 9: Add the Clear URL button */}
-          </div>
-        ) : (
-          <div>
-            <button onClick={handleToggleInput}>Insert Cover Image</button>
-          </div>
-        )}
-      </div>
-
+        {/* Step 3: Render the button or the input field based on the flag */}
+        <div ref={wrapperRef}>
+          {showUrlInput ? (
+            <div>
+              <input
+                type="text"
+                value={pictureUrl}
+                onChange={handlePictureUrlChange}
+                placeholder="Enter picture URL"
+              />
+              <button onClick={handleClearUrl}>Clear URL</button>{" "}
+              {/* Step 9: Add the Clear URL button */}
+            </div>
+          ) : (
+            <div>
+              <button onClick={handleToggleInput}>Insert Cover Image</button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Step 6: Render the uploaded picture */}
       {pictureUrl && (
         <div>
-          <img src={pictureUrl} alt="Uploaded" style={{ width: '100%', height: 'auto' }} />
+          <img
+            src={pictureUrl}
+            alt="Uploaded"
+            style={{ width: "100%", height: "auto" }}
+          />
         </div>
       )}
 
-
       <div id="editorjs"></div>
 
-      <hr/>
+      <hr />
 
-      <button onClick={handleSaveData} type="button" className="btn btn-success">
+      <button
+        onClick={handleSaveData}
+        type="button"
+        className="btn btn-success"
+      >
         Save Note
       </button>
     </>
