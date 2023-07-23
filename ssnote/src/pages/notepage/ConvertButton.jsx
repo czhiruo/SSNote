@@ -55,54 +55,51 @@ const ConvertButton = ({ noteTitle }) => {
     await updateDoc(userFilteredRef, filteredData);
 
     // generating cheatsheet and returning as an output file using docxtemplater
-    loadFile(
-      "https://docxtemplater.com/tag-example.docx",
-      function (error, content) {
-        if (error) {
-          throw error;
-        }
-        var zip = new PizZip(content);
-        var doc = new Docxtemplater(zip, {
-          paragraphLoop: true,
-          linebreaks: true,
-        });
-        doc.setData(filteredData);
-        try {
-          doc.render();
-        } catch (error) {
-          function replaceErrors(key, value) {
-            if (value instanceof Error) {
-              return Object.getOwnPropertyNames(value).reduce(function (
-                error,
-                key
-              ) {
-                error[key] = value[key];
-                return error;
-              },
-              {});
-            }
-            return value;
-          }
-          console.log(JSON.stringify({ error: error }, replaceErrors));
-
-          if (error.properties && error.properties.errors instanceof Array) {
-            const errorMessages = error.properties.errors
-              .map(function (error) {
-                return error.properties.explanation;
-              })
-              .join("\n");
-            console.log("errorMessages", errorMessages);
-          }
-          throw error;
-        }
-        var out = doc.getZip().generate({
-          type: "blob",
-          mimeType:
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        });
-        saveAs(out, "output.docx");
+    loadFile("../../../public/tag-example.docx", function (error, content) {
+      if (error) {
+        throw error;
       }
-    );
+      var zip = new PizZip(content);
+      var doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
+      doc.setData(filteredData);
+      try {
+        doc.render();
+      } catch (error) {
+        function replaceErrors(key, value) {
+          if (value instanceof Error) {
+            return Object.getOwnPropertyNames(value).reduce(function (
+              error,
+              key
+            ) {
+              error[key] = value[key];
+              return error;
+            },
+            {});
+          }
+          return value;
+        }
+        console.log(JSON.stringify({ error: error }, replaceErrors));
+
+        if (error.properties && error.properties.errors instanceof Array) {
+          const errorMessages = error.properties.errors
+            .map(function (error) {
+              return error.properties.explanation;
+            })
+            .join("\n");
+          console.log("errorMessages", errorMessages);
+        }
+        throw error;
+      }
+      var out = doc.getZip().generate({
+        type: "blob",
+        mimeType:
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      saveAs(out, "output.docx");
+    });
   };
 
   //choose tags
@@ -149,14 +146,14 @@ const ConvertButton = ({ noteTitle }) => {
                 checked={selectedTags.includes("Underline")}
                 onChange={handleTagChange}
               />
-              <Form.Check
+              {/* <Form.Check
                 type="checkbox"
-                id="highlightTag"
-                label="Highlight"
-                value="Highlight"
-                checked={selectedTags.includes("Highlight")}
+                id="italicsTag"
+                label="Italics"
+                value="Italics"
+                checked={selectedTags.includes("Italics")}
                 onChange={handleTagChange}
-              />
+              /> */}
             </Form.Group>
           </Form>
         </Modal.Body>
