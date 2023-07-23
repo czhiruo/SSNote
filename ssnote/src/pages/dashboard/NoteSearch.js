@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './styles/SearchBar.css';
 
 const NoteSearch = ({ userNotes, navigate }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,7 +21,7 @@ const NoteSearch = ({ userNotes, navigate }) => {
       : [];
 
   return (
-    <div>
+    <div className='search-box'>
       <input
         type="text"
         value={searchQuery}
