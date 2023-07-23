@@ -42,14 +42,12 @@ const EditorComponent = () => {
 
   const user = auth.currentUser;
   const userId = user.uid;
+  const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
   const fetchNoteData = async () => {
     try {
-      const user = auth.currentUser;
-      const userId = user.uid;
 
       // Fetch the note data from Firestore using the noteTitle from the URL params
-      const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
       const noteSnapshot = await getDoc(userNotesRef);
       const noteData = noteSnapshot.data();
       console.log("fetching data...", noteData.content);
@@ -58,6 +56,9 @@ const EditorComponent = () => {
       if (noteData && noteData.content !== "") {
         setInitialNoteData(noteData.content);
         console.log(noteData.content);
+        setPictureUrl(noteData.coverImage);
+        console.log(pictureUrl);
+        
       }
     } catch (error) {
       console.error("Error fetching note data:", error);
@@ -198,6 +199,7 @@ const EditorComponent = () => {
   useEffect(() => {
     if (initialNoteData !== null && ejInstance.current === null) {
       initEditor();
+      
     }
     return () => {
       ejInstance?.current?.destroy();
@@ -209,7 +211,6 @@ const EditorComponent = () => {
   const handleSaveData = async () => {
     try {
       const savedData = await ejInstance.current.save(); //data from editorjs
-      const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
       console.log("Note saved to Firebase: ", savedData);
       console.log("Cover Image saved: ", pictureUrl)
