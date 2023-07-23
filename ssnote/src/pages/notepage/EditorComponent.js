@@ -40,6 +40,9 @@ const EditorComponent = () => {
 
   const { noteTitle } = useParams();
 
+  const user = auth.currentUser;
+  const userId = user.uid;
+
   const fetchNoteData = async () => {
     try {
       const user = auth.currentUser;
@@ -100,8 +103,16 @@ const EditorComponent = () => {
     setShowUrlInput(false);
   };
 
-  const handlePictureUrlChange = (event) => {
+  const handlePictureUrlChange = async (event) => {
     setPictureUrl(event.target.value);
+    //update in the docs
+    const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
+
+    console.log("picture is set", pictureUrl);
+    await updateDoc(userNotesRef, {
+      coverImage: pictureUrl,
+    });
+    
   };
 
   const ejInstance = useRef();
@@ -206,9 +217,6 @@ const EditorComponent = () => {
   // Update document to the 'notes' collection in Firestore
   const handleSaveData = async () => {
     try {
-      const user = auth.currentUser;
-      const userId = user.uid;
-
       const savedData = await ejInstance.current.save(); //data from editorjs
       const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 

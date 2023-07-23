@@ -2,6 +2,7 @@ import React from 'react'
 import EditorComponent from './EditorComponent';
 import ConvertButton from './ConvertButton';
 import 'bootstrap/dist/css/bootstrap.css';
+import WithAuthCheck from "../WithAuthCheck";
 
 function Notepage() {
   return (
@@ -14,4 +15,4 @@ function Notepage() {
 }
 
 
-export default Notepage;
+export default WithAuthCheck(Notepage);

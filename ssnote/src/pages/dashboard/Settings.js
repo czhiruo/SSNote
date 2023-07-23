@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
+import WithAuthCheck from "../WithAuthCheck";
 
 const Settings = () => {
   const [isLogoutPopupOpen, setLogoutPopupOpen] = useState(false);
@@ -278,4 +279,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default WithAuthCheck(Settings);

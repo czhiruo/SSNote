@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { db, auth } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import WithAuthCheck from "../WithAuthCheck";
 
 const Dashboard = () => {
   const [userNotes, setUserNotes] = useState([]);
@@ -39,4 +40,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default WithAuthCheck(Dashboard);
