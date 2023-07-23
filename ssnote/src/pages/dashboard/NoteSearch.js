@@ -26,6 +26,7 @@ const NoteSearch = ({ userNotes, navigate }) => {
         value={searchQuery}
         onChange={handleSearchChange}
         placeholder="Search notes..."
+        className='search-input'
       />
       <ul>
         {filteredNotes.map((note) => (
