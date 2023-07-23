@@ -6,7 +6,7 @@ import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import { auth, db } from "../../firebase";
 import { getDoc, doc, updateDoc } from "@firebase/firestore";
-import './Note.css';
+import "./Note.css";
 
 const ConvertButton = ({ noteTitle }) => {
   const [showModal, setShowModal] = useState(false);
@@ -42,8 +42,11 @@ const ConvertButton = ({ noteTitle }) => {
       if (tagName === "Bold") {
         filteredData = {
           blocks: noteData.blocks.reduce((acc, block) => {
-            if (block.data.text.includes("<b>")) {
-              //filters bold
+            if (
+              block.data.text.includes("<b>") &&
+              !block.data.text.includes('<u class="cdx-underline">')
+            ) {
+              //filters blocks that are bolded
               const text = block.data.text.match(
                 /<b>(.*?)<\/b>/ //gets string inside
               )[1];
@@ -56,8 +59,11 @@ const ConvertButton = ({ noteTitle }) => {
       if (tagName === "Underline") {
         filteredData = {
           blocks: noteData.blocks.reduce((acc, block) => {
-            if (block.data.text.includes('<u class="cdx-underline">')) {
-              //filters underline
+            if (
+              block.data.text.includes('<u class="cdx-underline">') &&
+              !block.data.text.includes("<b>")
+            ) {
+              //filters underlined blocks only
               const text = block.data.text.match(
                 /<u class="cdx-underline">(.*?)<\/u>/ //gets string inside
               )[1];
@@ -69,33 +75,59 @@ const ConvertButton = ({ noteTitle }) => {
       }
     } else if (selectedTags.length === 2) {
       // If both bold and underline tags are selected, filter the noteData based on both tags
+      const filteredTextSet = new Set(); // Using Set to avoid duplicates
+      noteData.blocks.forEach((block) => {
+        // Capture bolded text in <b> tags
+        const boldRegex = /<b>(.*?)<\/b>/g;
+        let boldMatch;
+        while ((boldMatch = boldRegex.exec(block.data.text)) !== null) {
+          const text = boldMatch[1].replace(/<[^>]+>/g, ""); // Remove any remaining tags
+          filteredTextSet.add(text);
+        }
+
+        // Capture underlined text in <u class="cdx-underline"> tags
+        const underlineRegex = /<u class="cdx-underline">(.*?)<\/u>/g;
+        let underlineMatch;
+        while (
+          (underlineMatch = underlineRegex.exec(block.data.text)) !== null
+        ) {
+          const text = underlineMatch[1].replace(/<[^>]+>/g, ""); // Remove any remaining tags
+          filteredTextSet.add(text);
+        }
+
+        // Capture bolded text in <u class="cdx-underline"><b> tags
+        const underlineBoldRegex =
+          /<u class="cdx-underline"><b>(.*?)<\/b><\/u>/g;
+        let underlineBoldMatch;
+        while (
+          (underlineBoldMatch = underlineBoldRegex.exec(block.data.text)) !==
+          null
+        ) {
+          const text = underlineBoldMatch[1].replace(/<[^>]+>/g, ""); // Remove any remaining tags
+          filteredTextSet.add(text);
+        }
+
+        // Capture underlined text in <b><u class="cdx-underline"> tags
+        const boldUnderlineRegex =
+          /<b><u class="cdx-underline">(.*?)<\/u><\/b>/g;
+        let boldUnderlineMatch;
+        while (
+          (boldUnderlineMatch = boldUnderlineRegex.exec(block.data.text)) !==
+          null
+        ) {
+          const text = boldUnderlineMatch[1].replace(/<[^>]+>/g, ""); // Remove any remaining tags
+          filteredTextSet.add(text);
+        }
+      });
+
+      // Convert the Set back to an array
+      const filteredTextArray = Array.from(filteredTextSet);
+
+      // Create the filteredData object with the array of filtered texts
       filteredData = {
-        blocks: noteData.blocks.reduce((acc, block) => {
-          if (block.data.text.includes('<u class="cdx-underline">')) {
-            //filters underline
-            const text = block.data.text.match(
-              /<u class="cdx-underline">(.*?)<\/u>/ //gets string inside
-            )[1];
-            acc.push({ text });
-          }
-          return acc;
-        }, []),
+        blocks: filteredTextArray.map((text) => ({ text })),
       };
     }
-
-    // getting the data needed only for the cheatsheet
-    // const filteredData = {
-    //   blocks: noteData.blocks.reduce((acc, block) => {
-    //     if (block.data.text.includes('<b><u class="cdx-underline">')) {
-    //       //filters both underline and bold
-    //       const text = block.data.text.match(
-    //         /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets string inside
-    //       )[1];
-    //       acc.push({ text });
-    //     }
-    //     return acc;
-    //   }, []),
-    // };
 
     console.log("filtering data...", filteredData);
     const userFilteredRef = doc(
@@ -169,7 +201,7 @@ const ConvertButton = ({ noteTitle }) => {
     <>
       <Button
         type="button"
-        id='cheatsheet-convert'
+        id="cheatsheet-convert"
         className="btn-success"
         onClick={() => setShowModal(true)}
       >
