@@ -112,7 +112,7 @@ const EditorComponent = () => {
     await updateDoc(userNotesRef, {
       coverImage: pictureUrl,
     });
-    
+
   };
 
   const ejInstance = useRef();
@@ -204,10 +204,9 @@ const EditorComponent = () => {
 
   // This will run only once
   useEffect(() => {
-    if (initialNoteData !== "" && ejInstance.current === null) {
+    if (initialNoteData !== null && ejInstance.current === null) {
       initEditor();
     }
-
     return () => {
       ejInstance?.current?.destroy();
       ejInstance.current = null;
