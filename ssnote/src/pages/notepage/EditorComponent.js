@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
 
+
 //default note
 const DEFAULT_INITIAL_DATA = {
   time: new Date().getTime(),
@@ -223,9 +224,15 @@ const EditorComponent = ({noteTitle}) => {
 
   return (
     <>
-      <div className="above-notes">
-        <div className='top-section'>
-        <div className="return-link">
+      <div 
+      // style={aboveNotesStyles} 
+      className="above-notes">
+        <div 
+        // style={topSectionStyle} 
+        className='top-section'>
+        <div 
+        // style={returnLinkStyle} 
+        className="return-link">
           <Link to="/dashboard">
             <AiOutlineDoubleLeft />
             Return to Dashboard

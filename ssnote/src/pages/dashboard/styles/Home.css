@@ -56,11 +56,13 @@
     /* background-color: aqua; */
     text-decoration: none;
     color: black;
-    width: 100px;
+    /* width: 100px; */
     overflow: scroll;
     /* background-color: aqua; */
     width: 150px;
     display: block;
+    /* length: 10px; */
+    background: none;
     float: left;
     
 }
