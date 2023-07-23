@@ -186,7 +186,7 @@ function Home({navigate, fetchUserNotes, userNotes}) {
       {/* Step 5: New delete confirmation popup */}
       {showDeleteConfirmation && (
         <div className="popup-container">
-          <p>Are you sure you want to delete this note? You will lose all its contents. This action is irreversible.</p>
+          <p>Are you sure you want to delete this note? <br/> You will lose all its contents. <br/> This action is irreversible.</p>
           <button className="file-delete-confirm-button" onClick={handleNoteDeletion}>
             Yes, delete this note
           </button>
