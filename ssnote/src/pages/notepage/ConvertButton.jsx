@@ -55,7 +55,7 @@ const ConvertButton = ({ noteTitle }) => {
     await updateDoc(userFilteredRef, filteredData);
 
     // generating cheatsheet and returning as an output file using docxtemplater
-    loadFile("tag-example.docx", function (error, content) {
+    loadFile("https://firebasestorage.googleapis.com/v0/b/ssnote-65915.appspot.com/o/cheatsheet%20template%2Ftag-example.docx?alt=media&token=14e1f5eb-b9f1-44f2-93ea-33889ed92f08", function (error, content) {
       if (error) {
         throw error;
       }
