@@ -224,6 +224,7 @@ const EditorComponent = ({noteTitle}) => {
   return (
     <>
       <div className="above-notes">
+        <div className='top-section'>
         <div className="return-link">
           <Link to="/dashboard">
             <AiOutlineDoubleLeft />
@@ -241,7 +242,7 @@ const EditorComponent = ({noteTitle}) => {
                 onChange={handlePictureUrlChange}
                 placeholder="Enter picture URL"
               />
-              <button onClick={handleClearUrl}>Clear URL</button>{" "}
+              <button onClick={handleClearUrl}>clear</button>{" "}
               {/* Step 9: Add the Clear URL button */}
             </div>
           ) : (
@@ -250,6 +251,7 @@ const EditorComponent = ({noteTitle}) => {
             </div>
           )}
         </div>
+      </div>
       </div>
 
       {/* Step 6: Render the uploaded picture */}
