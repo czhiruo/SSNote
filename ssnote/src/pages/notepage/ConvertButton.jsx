@@ -30,19 +30,71 @@ const ConvertButton = ({ noteTitle }) => {
     console.log("Conversion:", selectedTags);
     setShowModal(false);
 
-    //getting the data needed only for the cheatsheet
-    const filteredData = {
-      blocks: noteData.blocks.reduce((acc, block) => {
-        if (block.data.text.includes('<b><u class="cdx-underline">')) {
-          //filters both underline and bold
-          const text = block.data.text.match(
-            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets string inside
-          )[1];
-          acc.push({ text });
-        }
-        return acc;
-      }, []),
+    let filteredData = {
+      blocks: [],
     };
+
+    if (selectedTags.length === 1) {
+      // If only one tag is selected, filter the noteData based on that tag
+      const tagName = selectedTags[0];
+      console.log(tagName);
+      if (tagName === "Bold") {
+        filteredData = {
+          blocks: noteData.blocks.reduce((acc, block) => {
+            if (block.data.text.includes("<b>")) {
+              //filters bold
+              const text = block.data.text.match(
+                /<b>(.*?)<\/b>/ //gets string inside
+              )[1];
+              acc.push({ text });
+            }
+            return acc;
+          }, []),
+        };
+      }
+      if (tagName === "Underline") {
+        filteredData = {
+          blocks: noteData.blocks.reduce((acc, block) => {
+            if (block.data.text.includes('<u class="cdx-underline">')) {
+              //filters underline
+              const text = block.data.text.match(
+                /<u class="cdx-underline">(.*?)<\/u>/ //gets string inside
+              )[1];
+              acc.push({ text });
+            }
+            return acc;
+          }, []),
+        };
+      }
+    } else if (selectedTags.length === 2) {
+      // If both bold and underline tags are selected, filter the noteData based on both tags
+      filteredData = {
+        blocks: noteData.blocks.reduce((acc, block) => {
+          if (block.data.text.includes('<u class="cdx-underline">')) {
+            //filters underline
+            const text = block.data.text.match(
+              /<u class="cdx-underline">(.*?)<\/u>/ //gets string inside
+            )[1];
+            acc.push({ text });
+          }
+          return acc;
+        }, []),
+      };
+    }
+
+    // getting the data needed only for the cheatsheet
+    // const filteredData = {
+    //   blocks: noteData.blocks.reduce((acc, block) => {
+    //     if (block.data.text.includes('<b><u class="cdx-underline">')) {
+    //       //filters both underline and bold
+    //       const text = block.data.text.match(
+    //         /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets string inside
+    //       )[1];
+    //       acc.push({ text });
+    //     }
+    //     return acc;
+    //   }, []),
+    // };
 
     console.log("filtering data...", filteredData);
     const userFilteredRef = doc(
