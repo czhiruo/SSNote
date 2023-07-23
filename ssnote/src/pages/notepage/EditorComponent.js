@@ -55,9 +55,7 @@ const EditorComponent = () => {
       // If note data exists, set the initial data for the EditorJS instance
       if (noteData && noteData.content !== "") {
         setInitialNoteData(noteData.content);
-        console.log(noteData.content);
         setPictureUrl(noteData.coverImage);
-        console.log(pictureUrl);
         
       }
     } catch (error) {
@@ -100,8 +98,9 @@ const EditorComponent = () => {
   };
 
   const handleClearUrl = () => {
-    setPictureUrl("");
+    setPictureUrl(null);
     setShowUrlInput(false);
+
   };
 
   const handlePictureUrlChange = async (event) => {
