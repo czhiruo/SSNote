@@ -6,7 +6,7 @@
 .above-notes {
     background-color: rgb(201, 201, 201);
     display: flex;
-    position: fixed;
+    /* position: fixed; */
     z-index: 10;
     width: 100%;
     flex-direction: row;
@@ -76,7 +76,7 @@
 }
 
 .cover-image-class img{
-    height: 180px;
+    height: 150px;
     width: 100%;
     object-fit: cover;
     
