@@ -105,14 +105,6 @@ const EditorComponent = () => {
 
   const handlePictureUrlChange = async (event) => {
     setPictureUrl(event.target.value);
-    //update in the docs
-    const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
-
-    console.log("picture is set", pictureUrl);
-    await updateDoc(userNotesRef, {
-      coverImage: pictureUrl,
-    });
-
   };
 
   const ejInstance = useRef();
@@ -219,9 +211,11 @@ const EditorComponent = () => {
       const savedData = await ejInstance.current.save(); //data from editorjs
       const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
 
-      console.log("Note saved to Firebase:", savedData);
+      console.log("Note saved to Firebase: ", savedData);
+      console.log("Cover Image saved: ", pictureUrl)
       await updateDoc(userNotesRef, {
         content: savedData,
+        coverImage:pictureUrl
       });
       cheatsheetData = savedData;
       showSavedMessage();

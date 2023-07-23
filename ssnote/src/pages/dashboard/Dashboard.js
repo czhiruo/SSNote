@@ -19,6 +19,7 @@ const Dashboard = () => {
       const notesData = notesSnapshot.docs.map((doc) => ({
         id: doc.id,
         title: doc.data().title,
+        coverImage: doc.data().coverImage
       }));
       //notesData is an array of notes with the id & title of each note
       console.log("fetching notes data:", notesData);

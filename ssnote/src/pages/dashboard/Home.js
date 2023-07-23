@@ -108,6 +108,11 @@ function Home({navigate, fetchUserNotes, userNotes}) {
       });
   };
 
+  const retrieveCoverImage = (note) => {
+    console.log(note);
+    return note.coverImage ? note.coverImage : file1;
+  };
+
   return (
     <div className="home">
       <p id="dashboard-title">Dashboard</p>
@@ -118,7 +123,7 @@ function Home({navigate, fetchUserNotes, userNotes}) {
           <div className="file" key={note.id}>
             <Link to={`/notebook/${encodeURIComponent(note.title)}`}>
               {/* You can also use different images for each file if available */}
-              <img src={file1} alt="file1" />
+              <img src={retrieveCoverImage(note)} alt="coverImage" />
               <br />
               <span className="file-title">{note.title}</span>
             </Link>
