@@ -48,7 +48,9 @@ function Home({navigate, fetchUserNotes, userNotes}) {
 
     try {
       const userNoteRef = doc(db, "users", userId, "notes", noteId);
+      const userFilterRef = doc(db, "users", userId, "filteredStrings", noteId);
       await deleteDoc(userNoteRef);
+      await deleteDoc(userFilterRef);
 
       console.log("Note deleted successfully.");
       handleFileMenuClose();
@@ -108,10 +110,12 @@ function Home({navigate, fetchUserNotes, userNotes}) {
 
     // Create a reference to the user's collection of notes
     const userNotesRef = doc(db, "users", userId, "notes", newNoteTitle);
+    const userFilterRef = doc(db, "users", userId, "filteredStrings", newNoteTitle)
 
     // Create a new note document with a generated ID
     await setDoc(userNotesRef, {
       title: newNoteTitle,
+      coverImage: null,
       content: DEFAULT_INITIAL_DATA,
     })
       .then(() => {
@@ -120,6 +124,15 @@ function Home({navigate, fetchUserNotes, userNotes}) {
       })
       .catch((error) => {
         console.error("Error adding note: ", error);
+      });
+    
+    await setDoc(userFilterRef, {
+      created: true
+    })
+      .then(() => {
+      })
+      .catch((error) => {
+        console.error("Error creating filtered data collection: ", error);
       });
   };
 

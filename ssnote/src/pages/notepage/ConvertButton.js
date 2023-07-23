@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import { cheatsheetData } from "./EditorComponent";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
-import { db } from "../../firebase";
-import { addDoc, collection } from "@firebase/firestore";
+import { auth, db } from "../../firebase";
+import { getDoc, doc, updateDoc } from "@firebase/firestore";
 
-const ConvertButton = () => {
+const ConvertButton = ({ noteTitle }) => {
   const [showModal, setShowModal] = useState(false);
-  const [orientation, setOrientation] = useState("landscape");
-  const [fontSize, setFontSize] = useState(1);
   const [selectedTags, setSelectedTags] = useState([]);
 
   const handleCloseModal = () => {
@@ -23,76 +20,86 @@ const ConvertButton = () => {
   }
 
   //convert to cheatsheet
-  const handleConvert = () => {
-    console.log("Conversion:", orientation, fontSize, selectedTags);
+  const handleConvert = async () => {
+    const user = auth.currentUser;
+    const userId = user.uid;
+    const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
+    const noteSnapshot = await getDoc(userNotesRef);
+    const noteData = noteSnapshot.data().content;
+
+    console.log("Conversion:", selectedTags);
     setShowModal(false);
 
     //getting the data needed only for the cheatsheet
     const filteredData = {
-      blocks: cheatsheetData.blocks.reduce((acc, block) => {
-        if (block.data.text.includes('<b><u class="cdx-underline">')) { //filters both underline and bold
+      blocks: noteData.blocks.reduce((acc, block) => {
+        if (block.data.text.includes('<b><u class="cdx-underline">')) {
+          //filters both underline and bold
           const text = block.data.text.match(
-            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets string inside 
+            /<b><u class="cdx-underline">(.*?)<\/u><\/b>/ //gets string inside
           )[1];
           acc.push({ text });
         }
         return acc;
       }, []),
     };
-    console.log(filteredData);
-    const ref = collection(db, "filteredStrings");
-    addDoc(ref, filteredData);
-    
-    // generating cheatsheet and returning as an output file
-    loadFile(
-        'tag-example.docx',
-        function (error, content) {
-          
-          if (error) {
-            throw error;
-          }
-          var zip = new PizZip(content);
-          var doc = new Docxtemplater(zip, {
-            paragraphLoop: true,
-            linebreaks: true,
-          });
-          doc.setData(filteredData);
-          try {
-            doc.render();
-          } catch (error) {
-            function replaceErrors(key, value) {
-              if (value instanceof Error) {
-                return Object.getOwnPropertyNames(value).reduce(function (
-                  error,
-                  key
-                ) {
-                  error[key] = value[key];
-                  return error;
-                },
-                {});
-              }
-              return value;
-            }
-            console.log(JSON.stringify({ error: error }, replaceErrors));
 
-            if (error.properties && error.properties.errors instanceof Array) {
-              const errorMessages = error.properties.errors
-                .map(function (error) {
-                  return error.properties.explanation;
-                })
-                .join('\n');
-              console.log('errorMessages', errorMessages);
-            }
-            throw error;
+    console.log("filtering data...", filteredData);
+    const userFilteredRef = doc(
+      db,
+      "users",
+      userId,
+      "filteredStrings",
+      noteTitle
+    );
+    await updateDoc(userFilteredRef, filteredData);
+
+    // generating cheatsheet and returning as an output file using docxtemplater
+    loadFile("tag-example.docx", function (error, content) {
+      if (error) {
+        throw error;
+      }
+      var zip = new PizZip(content);
+      var doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
+      doc.setData(filteredData);
+      try {
+        doc.render();
+      } catch (error) {
+        function replaceErrors(key, value) {
+          if (value instanceof Error) {
+            return Object.getOwnPropertyNames(value).reduce(function (
+              error,
+              key
+            ) {
+              error[key] = value[key];
+              return error;
+            },
+            {});
           }
-          var out = doc.getZip().generate({
-            type: 'blob',
-            mimeType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          });
-          saveAs(out, 'output.docx');
+          return value;
         }
-      );
+        console.log(JSON.stringify({ error: error }, replaceErrors));
+
+        if (error.properties && error.properties.errors instanceof Array) {
+          const errorMessages = error.properties.errors
+            .map(function (error) {
+              return error.properties.explanation;
+            })
+            .join("\n");
+          console.log("errorMessages", errorMessages);
+        }
+        throw error;
+      }
+      var out = doc.getZip().generate({
+        type: "blob",
+        mimeType:
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      });
+      saveAs(out, "output.docx");
+    });
   };
 
   //choose tags
@@ -121,26 +128,6 @@ const ConvertButton = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="formOrientation">
-              <Form.Label>Orientation:</Form.Label>
-              <Form.Control
-                as="select"
-                value={orientation}
-                onChange={(e) => setOrientation(e.target.value)}
-              >
-                <option value="landscape">Landscape</option>
-                <option value="portrait">Portrait</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="formFontSize">
-              <Form.Label>Font Size:</Form.Label>
-              <Form.Control
-                type="number"
-                min={1}
-                value={fontSize}
-                onChange={(e) => setFontSize(Number(e.target.value))}
-              />
-            </Form.Group>
             <Form.Group controlId="formTags">
               <Form.Label>Tags:</Form.Label>
               <Form.Check
@@ -161,10 +148,10 @@ const ConvertButton = () => {
               />
               <Form.Check
                 type="checkbox"
-                id="formulaTag"
-                label="Highligh"
-                value="highlight"
-                checked={selectedTags.includes('highlight')}
+                id="highlightTag"
+                label="Highlight"
+                value="Highlight"
+                checked={selectedTags.includes("Highlight")}
                 onChange={handleTagChange}
               />
             </Form.Group>
