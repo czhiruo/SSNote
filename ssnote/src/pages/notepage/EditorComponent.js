@@ -5,11 +5,10 @@ import List from "@editorjs/list";
 import Underline from "@editorjs/underline";
 import Header from "@editorjs/header";
 import Paragraph from "@editorjs/paragraph";
-import { db, auth } from "../../firebase";
 import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { auth, db } from "../../firebase";
 
 //default note
 const DEFAULT_INITIAL_DATA = {
@@ -32,13 +31,11 @@ const ColorPlugin = require("editorjs-text-color-plugin");
 
 let cheatsheetData = "no data";
 
-const EditorComponent = () => {
+const EditorComponent = ({noteTitle}) => {
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [pictureUrl, setPictureUrl] = useState("");
   const [initialNoteData, setInitialNoteData] = useState(null);
   const [isSavedMessageVisible, setIsSavedMessageVisible] = useState(false);
-
-  const { noteTitle } = useParams();
 
   const user = auth.currentUser;
   const userId = user.uid;
