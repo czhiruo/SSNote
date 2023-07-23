@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import { cheatsheetData } from "./EditorComponent";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import { auth, db } from "../../firebase";
-import { doc, updateDoc } from "@firebase/firestore";
+import { getDoc, doc, updateDoc } from "@firebase/firestore";
 
 const ConvertButton = ({ noteTitle }) => {
   const [showModal, setShowModal] = useState(false);
@@ -22,12 +21,18 @@ const ConvertButton = ({ noteTitle }) => {
 
   //convert to cheatsheet
   const handleConvert = async () => {
+    const user = auth.currentUser;
+    const userId = user.uid;
+    const userNotesRef = doc(db, "users", userId, "notes", noteTitle);
+    const noteSnapshot = await getDoc(userNotesRef);
+    const noteData = noteSnapshot.data().content;
+
     console.log("Conversion:", selectedTags);
     setShowModal(false);
 
     //getting the data needed only for the cheatsheet
     const filteredData = {
-      blocks: cheatsheetData.blocks.reduce((acc, block) => {
+      blocks: noteData.blocks.reduce((acc, block) => {
         if (block.data.text.includes('<b><u class="cdx-underline">')) {
           //filters both underline and bold
           const text = block.data.text.match(
@@ -38,11 +43,16 @@ const ConvertButton = ({ noteTitle }) => {
         return acc;
       }, []),
     };
-    console.log(filteredData);
-    const user = auth.currentUser;
-    const userId = user.uid;
-    const userNotesRef = doc(db, "users", userId, "filteredStrings", noteTitle);
-    await updateDoc(userNotesRef, filteredData);
+
+    console.log("filtering data...", filteredData);
+    const userFilteredRef = doc(
+      db,
+      "users",
+      userId,
+      "filteredStrings",
+      noteTitle
+    );
+    await updateDoc(userFilteredRef, filteredData);
 
     // generating cheatsheet and returning as an output file using docxtemplater
     loadFile("tag-example.docx", function (error, content) {
