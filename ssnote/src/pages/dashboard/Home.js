@@ -20,15 +20,27 @@ function Home({navigate, fetchUserNotes, userNotes}) {
 
   const user = auth.currentUser;
 
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
   const [showFileMenu, setShowFileMenu] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ left: 0, top: 0 });
 
   const handleFileMenuClose = () => {
     setSelectedNote(null);
+    setShowDeleteConfirmation(false);
   };
 
+
+  
+
   const handleFileDelete = async () => {
+    if (!selectedNote) return;
+    setShowDeleteConfirmation(true);
+  };
+
+  // Step 3: Create a new function to handle actual note deletion
+  const handleNoteDeletion = async () => {
     if (!selectedNote) return;
 
     const userId = user.uid;
@@ -45,6 +57,9 @@ function Home({navigate, fetchUserNotes, userNotes}) {
 
       // After deleting the note, refresh the page to update the list of notes
       fetchUserNotes();
+
+      // Close the delete confirmation popup
+      setShowDeleteConfirmation(false);
     } catch (error) {
       console.error("Error deleting note:", error);
     }
@@ -163,10 +178,21 @@ function Home({navigate, fetchUserNotes, userNotes}) {
             Delete Note
           </button>
           <button className="file-close-button" onClick={handleFileMenuClose}>
-            {" "}
             <AiOutlineClose /> Close
           </button>{" "}
-          {/* Close button */}
+        </div>
+      )}
+
+      {/* Step 5: New delete confirmation popup */}
+      {showDeleteConfirmation && (
+        <div className="popup-container">
+          <p>Are you sure you want to delete this note? You will lose all its contents. This action is irreversible.</p>
+          <button className="file-delete-confirm-button" onClick={handleNoteDeletion}>
+            Yes, delete this note
+          </button>
+          <button className="file-delete-cancel-button" onClick={handleFileMenuClose}>
+            Cancel
+          </button>
         </div>
       )}
 

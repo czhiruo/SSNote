@@ -25,8 +25,9 @@ function Sidebar({navigate, userNotes}) {
             <IoIcons.IoSettingsOutline className='icons' />
             Settings
         </Link>
+        <hr />
         <NoteSearch userNotes={userNotes} navigate={navigate} />
-      <hr />
+      
 
 
     </div>

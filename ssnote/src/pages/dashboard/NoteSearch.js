@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './styles/SearchBar.css';
 
 const NoteSearch = ({ userNotes, navigate }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -20,12 +21,13 @@ const NoteSearch = ({ userNotes, navigate }) => {
       : [];
 
   return (
-    <div>
+    <div className='search-box'>
       <input
         type="text"
         value={searchQuery}
         onChange={handleSearchChange}
         placeholder="Search notes..."
+        className='search-input'
       />
       <ul>
         {filteredNotes.map((note) => (
