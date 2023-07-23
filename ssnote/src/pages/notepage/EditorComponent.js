@@ -9,6 +9,7 @@ import { AiOutlineDoubleLeft } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "../../firebase";
+import './Note.css';
 
 
 //default note
@@ -232,29 +233,30 @@ const EditorComponent = ({noteTitle}) => {
         className='top-section'>
         <div 
         // style={returnLinkStyle} 
-        className="return-link">
-          <Link to="/dashboard">
-            <AiOutlineDoubleLeft />
+        className="return-link"
+        >
+          <Link to="/dashboard" className="return-link" id='return-link'>
+            <AiOutlineDoubleLeft className='back-icon' />
             Return to Dashboard
           </Link>
         </div>
 
         {/* Step 3: Render the button or the input field based on the flag */}
-        <div ref={wrapperRef}>
+        <div ref={wrapperRef} className='cover-image-input'>
           {showUrlInput ? (
             <div>
               <input
                 type="text"
                 value={pictureUrl}
                 onChange={handlePictureUrlChange}
-                placeholder="Enter picture URL"
+                placeholder="Enter picture URL.."
               />
               <button onClick={handleClearUrl}>clear</button>{" "}
               {/* Step 9: Add the Clear URL button */}
             </div>
           ) : (
-            <div>
-              <button onClick={handleToggleInput}>Insert Cover Image</button>
+            <div >
+              <button classname='cover-button' onClick={handleToggleInput}>Insert Cover Image</button>
             </div>
           )}
         </div>
@@ -263,29 +265,37 @@ const EditorComponent = ({noteTitle}) => {
 
       {/* Step 6: Render the uploaded picture */}
       {pictureUrl && (
-        <div>
+        <div className='cover-image-class'>
           <img
             src={pictureUrl}
             alt="Uploaded"
-            style={{ width: "100%", height: "auto" }}
+            // style={{ width: "100%", height: "auto" }}
           />
         </div>
       )}
 
       <div id="editorjs"></div>
 
-      <hr />
+      <div className='note-bottom'>
+      
 
-      <button
-        onClick={handleSaveData}
-        type="button"
-        className="btn btn-success"
-      >
-        Save Note
-      </button>
       {isSavedMessageVisible && (
         <div className="saved-message">Note has been saved successfully!</div>
       )}
+      
+      <button
+        onClick={handleSaveData}
+        type="button"
+        className="btn-success"
+        id='save-button'
+      >
+        Save Note
+      </button>
+
+      
+      
+
+      </div>
     </>
   );
 };

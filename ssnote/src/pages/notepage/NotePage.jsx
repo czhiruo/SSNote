@@ -4,13 +4,14 @@ import ConvertButton from './ConvertButton';
 import 'bootstrap/dist/css/bootstrap.css';
 import WithAuthCheck from "../WithAuthCheck";
 import { useParams } from "react-router-dom";
+// import './Note.css';
 
 function Notepage() {
   const { noteTitle } = useParams();
   return (
     <div className="App">
       <EditorComponent noteTitle={noteTitle} />
-      <br />
+      {/* <br /> */}
       <ConvertButton noteTitle={noteTitle}/>
     </div>
   );

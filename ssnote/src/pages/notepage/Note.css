@@ -1,0 +1,126 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+}
+
+.above-notes {
+    background-color: rgb(201, 201, 201);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.return-link {
+    float: left;
+    color: black;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+    
+}
+
+#return-link {
+    background-color: rgb(235, 235, 235);
+    font-size: smaller;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 8px;
+}
+
+#return-link:hover {
+    background-color: white;
+}
+
+.back-icon {
+    margin-right: 5px;
+    font-size: medium;
+}
+
+.cover-image-input {
+    float: right;
+    order: -1;
+    /* margin-left: 20px; */
+    
+}
+
+.above-notes button {
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    border: none;
+    font-size: smaller;
+    padding: 8px;
+    margin: 10px;
+    background-color: rgb(235, 235, 235);
+    /* width: 180px; */
+    
+
+}
+
+.above-notes input {
+    border-radius: 5px;
+    border: none;
+    font-size: smaller;
+    padding: 8px;
+    margin-left: 10px;
+}
+
+.cover-image-class {
+    height: 150px;
+    width: 100%;
+    object-fit: fill;
+}
+
+.cover-image-class img{
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.above-notes button:hover {
+    background-color: white;
+}
+ 
+.btn-success, #cheatsheet-convert {
+    background-color: rgb(213, 213, 213);
+    border-radius: 5px;
+    border: none;
+    padding: 8px;
+    color: black;
+    margin: 10px;
+    z-index: 10;
+
+}
+
+.btn-success {
+    margin-right: auto;
+    
+}
+
+#save-button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+#cheatsheet-convert {
+    float: right;
+    margin-left: auto;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
+.saved-message {
+    position: fixed;
+    bottom: 7px;
+    left: 120px;
+    background-color: white;
+    padding: 10px;
+    z-index: 9;
+}
+
+
+
+

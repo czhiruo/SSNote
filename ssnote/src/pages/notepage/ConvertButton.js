@@ -6,6 +6,7 @@ import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import { auth, db } from "../../firebase";
 import { getDoc, doc, updateDoc } from "@firebase/firestore";
+import './Note.css';
 
 const ConvertButton = ({ noteTitle }) => {
   const [showModal, setShowModal] = useState(false);
@@ -116,7 +117,8 @@ const ConvertButton = ({ noteTitle }) => {
     <>
       <Button
         type="button"
-        className="btn btn-success"
+        id='cheatsheet-convert'
+        className="btn-success"
         onClick={() => setShowModal(true)}
       >
         Convert to Cheatsheet
