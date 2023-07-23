@@ -36,7 +36,9 @@ function Home({navigate, fetchUserNotes, userNotes}) {
 
     try {
       const userNoteRef = doc(db, "users", userId, "notes", noteId);
+      const userFilterRef = doc(db, "users", userId, "filteredStrings", noteId);
       await deleteDoc(userNoteRef);
+      await deleteDoc(userFilterRef);
 
       console.log("Note deleted successfully.");
       handleFileMenuClose();
@@ -110,7 +112,7 @@ function Home({navigate, fetchUserNotes, userNotes}) {
       });
     
     await setDoc(userFilterRef, {
-      content: ""
+      created: true
     })
       .then(() => {
       })

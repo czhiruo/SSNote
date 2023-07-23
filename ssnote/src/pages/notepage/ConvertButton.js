@@ -6,7 +6,7 @@ import PizZip from "pizzip";
 import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import { auth, db } from "../../firebase";
-import { doc, addDoc, updateDoc } from "@firebase/firestore";
+import { doc, updateDoc } from "@firebase/firestore";
 
 const ConvertButton = ({ noteTitle }) => {
   const [showModal, setShowModal] = useState(false);
@@ -42,7 +42,7 @@ const ConvertButton = ({ noteTitle }) => {
     const user = auth.currentUser;
     const userId = user.uid;
     const userNotesRef = doc(db, "users", userId, "filteredStrings", noteTitle);
-    addDoc(userNotesRef, filteredData);
+    await updateDoc(userNotesRef, filteredData);
 
     // generating cheatsheet and returning as an output file using docxtemplater
     loadFile("tag-example.docx", function (error, content) {
