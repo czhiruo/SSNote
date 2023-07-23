@@ -2,28 +2,44 @@ import { useState } from "react";
 import "./styles.css";
 import logo from "../dashboard/assets/SSNote-Logo-gray.png";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const auth = getAuth();
 
   //handles logic when users press log in button
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        navigate("/dashboard")
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        // Sign in with email and password
+        return signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            console.log(userCredential);
+            navigate("/dashboard");
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Invalid user");
+          });
       })
       .catch((error) => {
-        console.log(error);
-        alert("Invalid user");
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
       });
   };
 
@@ -51,25 +67,23 @@ const Login = () => {
             required
           />
         </div>
-        <Link to={'/forgotpassword'} className="changePassword" >
+        <Link to={"/forgotpassword"} className="changePassword">
           <u>Forgot Password?</u>
         </Link>
 
         <br />
-        
+
         <div className="button-container">
-          <input type="submit" value='Log In'/>
+          <input type="submit" value="Log In" />
         </div>
 
         <br />
 
-        <p id='no-account'>Don't have an account?</p>
-        
-        <Link to={'/signup'} className="signUp" >
+        <p id="no-account">Don't have an account?</p>
+
+        <Link to={"/signup"} className="signUp">
           <u>Sign Up Here!</u>
         </Link>
-
-
       </form>
     </div>
   );

@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { auth } from "../firebase";
 
 const WithAuthCheck = (Component) => {
-  return (props) => {
+  const WithAuthComponent = (props) => {
     const user = auth.currentUser;
 
-    // If the user is not logged in, redirect to the default login page
-    if (!user) {
-      return <Navigate to="/" />;
-    }
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (!user) {
+          // Redirect to login page if user is not logged in
+          // You can customize the route to redirect to as needed
+          <Navigate to="/login" />;
+        }
+      });
+
+      return () => {
+        // Clean up the auth state change subscription when the component unmounts
+        unsubscribe();
+      };
+    }, []);
 
     // If the user is logged in, render the wrapped component
-    return <Component {...props} />;
+    return user ? <Component {...props} /> : null;
   };
+
+  return WithAuthComponent;
 };
 
 export default WithAuthCheck;
