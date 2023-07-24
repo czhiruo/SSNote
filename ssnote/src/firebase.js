@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getFirestore } from '@firebase/firestore';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBFudqAjf1J3Tfa0XYcsk2_Ivw_7v93gQ",
@@ -13,16 +13,9 @@ const firebaseConfig = {
   measurementId: "G-D9G6YBY863"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const auth = getAuth(app);
-
-// onAuthStateChanged(auth, (user) => {
-//   if (!user) {
-//     window.location.href = "/";
-//   }
-// });
 
 export { db, auth };

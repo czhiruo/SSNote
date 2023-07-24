@@ -8,14 +8,13 @@ import {
   browserLocalPersistence,
 } from "firebase/auth";
 import { Link } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { auth } from "../../firebase";
 
-const Login = () => {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
-  const auth = getAuth();
 
   //handles logic when users press log in button
   const handleSubmit = (event) => {
