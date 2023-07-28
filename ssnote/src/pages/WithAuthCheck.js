@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 
 const WithAuthCheck = (Component) => {
+  const navigate = useNavigate();
   const WithAuthComponent = (props) => {
     const user = auth.currentUser;
 
@@ -11,7 +12,7 @@ const WithAuthCheck = (Component) => {
         if (!user) {
           // Redirect to login page if user is not logged in
           // You can customize the route to redirect to as needed
-          <Navigate to="/login" />;
+          navigate("/");
         }
       });
 
