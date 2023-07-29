@@ -3,7 +3,6 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { auth, db } from "../../firebase";
 import { getDoc, doc, updateDoc } from "@firebase/firestore";
 import "./Note.css";
-import { useNavigate } from "react-router-dom";
 
 const ConvertButton = ({ noteTitle, setFilteredData }) => {
   const [showModal, setShowModal] = useState(false);
@@ -12,8 +11,6 @@ const ConvertButton = ({ noteTitle, setFilteredData }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-
-  const navigate = useNavigate();
 
   //convert to cheatsheet
   const handleConvert = async () => {
