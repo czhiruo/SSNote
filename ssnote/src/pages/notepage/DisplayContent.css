@@ -1,0 +1,8 @@
+.title {
+    text-align: center;
+}
+
+.indented-paragraph {
+    text-indent: 20px;
+    /* Adjust the value as per your requirement */
+}
