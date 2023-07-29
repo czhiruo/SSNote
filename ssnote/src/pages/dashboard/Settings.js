@@ -279,4 +279,4 @@ const Settings = () => {
   );
 };
 
-export default WithAuthCheck(Settings);
+export default Settings;

@@ -256,7 +256,7 @@ const EditorComponent = ({noteTitle}) => {
             </div>
           ) : (
             <div >
-              <button classname='cover-button' onClick={handleToggleInput}>Insert Cover Image</button>
+              <button className='cover-button' onClick={handleToggleInput}>Insert Cover Image</button>
             </div>
           )}
         </div>

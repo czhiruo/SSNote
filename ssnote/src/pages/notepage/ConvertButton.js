@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import Docxtemplater from "docxtemplater";
-import PizZip from "pizzip";
-import PizZipUtils from "pizzip/utils/index.js";
-import { saveAs } from "file-saver";
 import { auth, db } from "../../firebase";
 import { getDoc, doc, updateDoc } from "@firebase/firestore";
 import "./Note.css";
+import { useNavigate } from "react-router-dom";
 
-const ConvertButton = ({ noteTitle }) => {
+const ConvertButton = ({ noteTitle, setFilteredData }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
 
@@ -16,9 +13,7 @@ const ConvertButton = ({ noteTitle }) => {
     setShowModal(false);
   };
 
-  function loadFile(url, callback) {
-    PizZipUtils.getBinaryContent(url, callback);
-  }
+  const navigate = useNavigate();
 
   //convert to cheatsheet
   const handleConvert = async () => {
@@ -129,6 +124,7 @@ const ConvertButton = ({ noteTitle }) => {
       };
     }
 
+    //data is filtered
     console.log("filtering data...", filteredData);
     const userFilteredRef = doc(
       db,
@@ -138,56 +134,8 @@ const ConvertButton = ({ noteTitle }) => {
       noteTitle
     );
     await updateDoc(userFilteredRef, filteredData);
-
-    // generating cheatsheet and returning as an output file using docxtemplater
-    loadFile(
-      'https://docxtemplater.com/tag-example.docx',
-      function (error, content) {
-        if (error) {
-          throw error;
-        }
-        var zip = new PizZip(content);
-        var doc = new Docxtemplater(zip, {
-          paragraphLoop: true,
-          linebreaks: true,
-        });
-        doc.setData(filteredData);
-        try {
-          doc.render();
-        } catch (error) {
-          function replaceErrors(key, value) {
-            if (value instanceof Error) {
-              return Object.getOwnPropertyNames(value).reduce(function (
-                error,
-                key
-              ) {
-                error[key] = value[key];
-                return error;
-              },
-              {});
-            }
-            return value;
-          }
-          console.log(JSON.stringify({ error: error }, replaceErrors));
-
-          if (error.properties && error.properties.errors instanceof Array) {
-            const errorMessages = error.properties.errors
-              .map(function (error) {
-                return error.properties.explanation;
-              })
-              .join("\n");
-            console.log("errorMessages", errorMessages);
-          }
-          throw error;
-        }
-        var out = doc.getZip().generate({
-          type: "blob",
-          mimeType:
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        });
-        saveAs(out, "output.docx");
-      }
-    );
+    setFilteredData(filteredData);
+    // navigate(`/filteredData/${noteTitle}`)
   };
 
   //choose tags

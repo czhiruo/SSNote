@@ -41,4 +41,4 @@ const Dashboard = () => {
   );
 };
 
-export default WithAuthCheck(Dashboard);
+export default Dashboard;

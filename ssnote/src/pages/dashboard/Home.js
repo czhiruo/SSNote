@@ -31,9 +31,6 @@ function Home({navigate, fetchUserNotes, userNotes}) {
     setShowDeleteConfirmation(false);
   };
 
-
-  
-
   const handleFileDelete = async () => {
     if (!selectedNote) return;
     setShowDeleteConfirmation(true);
