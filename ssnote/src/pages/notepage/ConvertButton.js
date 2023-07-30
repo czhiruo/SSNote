@@ -153,7 +153,7 @@ const ConvertButton = ({ noteTitle, setFilteredData }) => {
         className="btn-success"
         onClick={() => setShowModal(true)}
       >
-        Convert to Cheatsheet
+        Summarise
       </Button>
 
       <Modal show={showModal} onHide={handleCloseModal}>
@@ -196,7 +196,7 @@ const ConvertButton = ({ noteTitle, setFilteredData }) => {
             Cancel
           </Button>
           <Button variant="success" onClick={handleConvert}>
-            Convert
+            Convert to Summary
           </Button>
         </Modal.Footer>
       </Modal>
