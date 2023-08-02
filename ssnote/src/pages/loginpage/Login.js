@@ -45,11 +45,12 @@ function Login() {
   //login form display
   const renderForm = (
     <div className="form">
-      <form onSubmit={handleSubmit}>
+      <form data-testid="login-form" onSubmit={handleSubmit}>
         <div className="input-container">
-          <label>Email </label>
+          <label htmlFor="email">Email </label>
           <input
             type="text"
+            id="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -57,9 +58,10 @@ function Login() {
           />
         </div>
         <div className="input-container">
-          <label>Password </label>
+          <label htmlFor="password">Password </label>
           <input
             type="password"
+            id="password"
             name="pass"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
